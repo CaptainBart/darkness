@@ -1,0 +1,63 @@
+:host {
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    .darkness-row {
+        width: 100%;
+        height: 20px;
+        display: flex;
+        position: relative;
+        border-bottom: solid 1px red;
+        color: red;
+
+        .info {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .daylight {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            background-color: yellow;
+            height: 100%;
+        }
+
+        .twilight {
+            margin: 0;
+            padding: 0;
+            background-color: lightblue;
+            height: 100%;
+        }
+
+        .nautical-twilight {
+            margin: 0;
+            padding: 0;
+            background-color: blue;
+            height: 100%;
+        }
+
+        .astronomical-twilight {
+            margin: 0;
+            padding: 0;
+            background-color: darkblue;
+            height: 100%;
+        }
+
+        .night {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            height: 100%;
+        }
+
+        .moon {
+            margin: 0;
+            padding: 0;
+            background-color: #666;
+            height: 100%;
+        }
+    }
+}

@@ -1,0 +1,58 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { combineLatest, Subject } from 'rxjs';
+import { map, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { ShellService } from 'src/app/shell/shell.service';
+
+@Component({
+  selector: 'app-month',
+  templateUrl: './month.component.html',
+  styleUrls: ['./month.component.scss']
+})
+export class MonthComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject();
+
+  year$ = this.route.params.pipe(
+    map(params => +params['year'])
+  );
+
+  month$ = this.route.params.pipe(
+    map(params => +params['month'])
+  );
+
+  constructor(private router: Router, private route: ActivatedRoute, private shellService: ShellService) {
+    this.shellService.previousClicked$.pipe(
+      takeUntil(this.destroy$),
+      withLatestFrom(this.year$, (_, year) => year),
+      withLatestFrom(this.month$)
+    )
+    .subscribe(([year, month]) => {
+      this.router.navigate(['year', month == 1 ? year - 1 : year, month == 1 ? 12 : month - 1]);
+    });
+
+    this.shellService.nextClicked$.pipe(
+      takeUntil(this.destroy$),
+      withLatestFrom(this.year$, (_, year) => year),
+      withLatestFrom(this.month$)
+    )
+    .subscribe(([year, month]) => {
+      this.router.navigate(['year', month == 12 ? year + 1 : year, month == 12 ? 1 : month + 1]);
+    });
+
+    combineLatest([this.year$, this.month$]).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(([year, month]) => {
+
+      this.shellService.changeTitle(`${month}/${year}`);
+    });
+  }
+
+  ngOnInit(): void {
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+}
