@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
 import { map, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { ShellService } from 'src/app/shell/shell.service';
+import { LocationService } from '../location/location.service';
 
 @Component({
   selector: 'app-month',
@@ -11,7 +12,8 @@ import { ShellService } from 'src/app/shell/shell.service';
 })
 export class MonthComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject();
-
+  location$ = this.locationService.location$;
+  
   year$ = this.route.params.pipe(
     map(params => +params['year'])
   );
@@ -20,7 +22,11 @@ export class MonthComponent implements OnInit, OnDestroy {
     map(params => +params['month'])
   );
 
-  constructor(private router: Router, private route: ActivatedRoute, private shellService: ShellService) {
+  constructor(
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly locationService: LocationService,
+    private readonly shellService: ShellService) {
     this.shellService.previousClicked$.pipe(
       takeUntil(this.destroy$),
       withLatestFrom(this.year$, (_, year) => year),

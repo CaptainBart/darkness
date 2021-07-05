@@ -1,1 +1,3 @@
-<app-darkness-year [year]="year$ | async"></app-darkness-year>
+<ng-container *ngIf="location$ | async as location">
+    <app-darkness-year [lat]="location.lat" [lng]="location.lng" [year]="year$ | async"></app-darkness-year>
+</ng-container>

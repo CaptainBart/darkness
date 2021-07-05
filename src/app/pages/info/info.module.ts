@@ -2,24 +2,22 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-import { HomeComponent } from './home.component';
-import { DarknessModule } from '../../components/darkness/darkness.module';
+import { InfoComponent } from './info.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    component: InfoComponent,
   }
 ];
 
 @NgModule({
   declarations: [
-    HomeComponent,
+    InfoComponent,
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    DarknessModule,
   ]
 })
-export class HomeModule { }
+export class InfoModule { }

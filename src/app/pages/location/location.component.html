@@ -1,0 +1,27 @@
+<form [formGroup]="form">
+    <div>
+        <mat-form-field>
+            <mat-label>Location</mat-label>
+            <input matInput formControlName="name" />
+            <button *ngIf="!fetchingPosition; else spinner" mat-icon-button matSuffix (click)="fetchPosition()">
+                <mat-icon>my_location</mat-icon>
+            </button>
+            <ng-template #spinner>
+                <mat-spinner matSuffix diameter="24"></mat-spinner>
+            </ng-template>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field>
+            <mat-label>Latitude</mat-label>
+            <input matInput formControlName="lat" readonly="readonly">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Longitude</mat-label>
+            <input matInput formControlName="lng" readonly="readonly">
+        </mat-form-field>
+    </div>
+    <div>
+        <button mat-raised-button color="primary" [disabled]="form.disabled" (click)="storePosition()">Save</button>
+    </div>
+</form>

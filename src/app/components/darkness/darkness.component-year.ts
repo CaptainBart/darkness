@@ -9,16 +9,16 @@ import { DarknessService } from './darkness.service';
 })
 export class DarknessYearComponent implements OnInit, OnChanges {
   @Input()
-  public lat: number = 52.02258929470043;
+  public lat: number = 52.091222;
   @Input()
-  public lng: number = 5.634036837524087;
+  public lng: number = 5.125379;
   @Input()
   public year: number = new Date().getFullYear();
 
   nightsSubject = new BehaviorSubject([]);
   night$ = this.nightsSubject.asObservable();
 
-  constructor(private darknessService: DarknessService) {
+  constructor(private readonly darknessService: DarknessService) {
   }
 
   ngOnInit(): void {

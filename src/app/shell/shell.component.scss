@@ -19,6 +19,10 @@
        causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
     flex: 1;
   }
+
+  mat-sidenav {
+    min-width: 320px;
+  }
   
   .is-mobile .sidenav-container {
     /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the

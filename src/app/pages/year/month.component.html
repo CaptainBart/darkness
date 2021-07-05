@@ -1,1 +1,3 @@
-<app-darkness-infinite year="{{year$ | async}}" month="{{month$ | async}}"></app-darkness-infinite>
+<ng-container *ngIf="location$ | async as location">
+    <app-darkness-infinite [lat]="location.lat" [lng]="location.lng" year="{{year$ | async}}" month="{{month$ | async}}"></app-darkness-infinite>
+</ng-container>

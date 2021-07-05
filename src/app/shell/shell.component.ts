@@ -14,7 +14,7 @@ export class ShellComponent implements OnInit, OnDestroy {
 
   private _mobileQueryListener: () => void;
 
-  constructor(private shellService: ShellService, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+  constructor(private readonly shellService: ShellService, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
