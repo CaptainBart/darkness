@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { LocationService } from './location.service';
 import { Location } from './location.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-location',
@@ -15,16 +16,18 @@ export class LocationComponent implements OnInit {
   public form: FormGroup;
   public location$ = this.locationService.location$;
   public fetchingPosition = false;
+  public hasLocation$ = this.locationService.hasLocation$;
 
   constructor(
     private readonly locationService: LocationService,
     private readonly formBuilder: FormBuilder,
-    private router: Router,
+    private readonly snackBar: MatSnackBar,
+    private readonly router: Router,
   ) {
     this.form = this.formBuilder.group({
-      'name': [''],
-      'lat': [''],
-      'lng': ['']
+      'name': ['', Validators.required],
+      'lat': ['', Validators.required],
+      'lng': ['', Validators.required]
     });
 
     this.location$.pipe(
@@ -46,24 +49,34 @@ export class LocationComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public fetchPosition(): void
+  public fetchCurrentLocation(): void
   {
-    this.fetchingPosition = true;
     this.form.disable();
-    this.locationService.fetchGpsLocation().subscribe(
-      (position => {
-        console.dir(position.coords);
-        this.formLocation = {
-          'name': 'Current position',
-          'lat': position.coords.latitude,
-          'lng': position.coords.longitude,
-        };
-        
-        this.fetchingPosition = false;
+    this.locationService.fetchCurrentLocation().subscribe(
+      (location => {
+        console.dir(location);
+        this.formLocation = location;
         this.form.enable();
       }),
       () => {
-        this.fetchingPosition = false;
+        this.form.enable();
+      }
+    );
+  }
+
+  public fetchLocationByName(): void
+  {
+    this.form.disable();
+    this.locationService.fetchLocation(this.formLocation.name).subscribe(
+      (location => {
+        if(location) {
+          this.formLocation = location;
+        }  else {
+          this.snackBar.open('Location not found.', '');
+        }    
+        this.form.enable();
+      }),
+      () => {
         this.form.enable();
       }
     );

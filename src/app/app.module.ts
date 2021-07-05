@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DarknessModule } from './components/darkness/darkness.module';
 import { RouterModule, Routes } from '@angular/router';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { HttpClientModule } from '@angular/common/http';
 
 const routes: Routes = [
   { path: '', loadChildren: () => import('./shell/shell.module').then(m => m.ShellModule) },
@@ -18,8 +19,9 @@ const routes: Routes = [
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes),
     BrowserAnimationsModule,
+    HttpClientModule,
+    RouterModule.forRoot(routes),
     DarknessModule,
   ],
   providers: [
