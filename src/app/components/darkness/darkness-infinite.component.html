@@ -6,6 +6,7 @@
             [class.astronomical-twilight]="section.type === SectionType.ASTRONOMICAL_TWILIGHT"
             [class.night]="section.type === SectionType.NIGHT"
             [class.moon]="section.type === SectionType.MOON"
+            title="{{section.startsAt}} - {{section.endsAt}}"
             [ngStyle]="{'width': (section.totalMinutes / night.totalMinutes * 100) + '%'}">
     </div>
     <div class="info">{{night.startDate.getDate()}}</div>

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { DarknessSections, SectionType } from './darkness-sections';
 import { DarknessService } from './darkness.service';
@@ -37,7 +37,7 @@ export class DarknessInfiniteComponent implements OnInit {
   }
 
   private updateDarkness(): void {
-    this.nightsSubject.next(this.darknessService.getInfiniteDarkness(this.year, this.month - 1, this.lat, this.lng));
+    this.nightsSubject.next(this.darknessService.getInfiniteDarknessForMonth(this.year, this.month - 1, {lat: this.lat, lng: this.lng}));
   }
 
 }
