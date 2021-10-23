@@ -10,13 +10,15 @@ import { DarknessService } from './darkness.service';
 })
 export class DarknessInfiniteComponent implements OnInit {
   @Input()
-  public lat: number = 52.091222;
+  public lat: number = 28.764035;
   @Input()
-  public lng: number = 5.125379;
+  public lng: number = -17.894234;
   @Input()
   public year: number = new Date().getFullYear();
   @Input()
   public month: number = new Date().getMonth();
+  @Input()
+  public timezone: string = 'Atlantic/Canary';
 
   public nightsSubject = new BehaviorSubject<DarknessSections[]>([]);
   public night$ = this.nightsSubject.asObservable();

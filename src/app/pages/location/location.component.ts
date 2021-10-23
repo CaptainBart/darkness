@@ -27,7 +27,8 @@ export class LocationComponent implements OnInit {
     this.form = this.formBuilder.group({
       'name': ['', Validators.required],
       'lat': ['', Validators.required],
-      'lng': ['', Validators.required]
+      'lng': ['', Validators.required],
+      'timezone': ['', Validators.required],
     });
 
     this.location$.pipe(

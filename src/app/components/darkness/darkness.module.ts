@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DarknessInfiniteComponent } from './darkness-infinite.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -8,6 +9,7 @@ import { DarknessInfiniteComponent } from './darkness-infinite.component';
   ],
   imports: [
     CommonModule,
+    SharedModule,
   ],
   exports: [
     DarknessInfiniteComponent,

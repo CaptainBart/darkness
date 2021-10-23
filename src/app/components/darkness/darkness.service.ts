@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import * as SunCalc from 'suncalc';
 import { addDays } from 'date-fns';
 import { DarknessSections } from './darkness-sections';
 import { GeoLocation } from './geo-location';

@@ -3,6 +3,7 @@ import { BehaviorSubject, bindCallback, Observable, of } from 'rxjs';
 import { map, mergeMap, take } from 'rxjs/operators';
 import { GeocodingService, SearchResult } from './geocoding.service';
 import { Location } from './location.model';
+import { tz_lookup } from './tz-lookup';
 
 const LOCALSTORAGE_KEY = 'darkness.location';
 
@@ -10,6 +11,7 @@ const INITIAL_LOCATION: Location = {
   name: 'Roque de los Muchachos',
   lat: 28.764035,
   lng: -17.894234,
+  timezone: 'Atlantic/Canary'
 };
 
 @Injectable({providedIn: 'root'})
@@ -66,7 +68,12 @@ export class LocationService {
       map(position => position.coords),
       mergeMap(
         coords => this.geocodingService.reverse(coords.latitude, coords.longitude).pipe(
-          map(result => ({ name: result.display_name, lat: coords.latitude, lng: coords.longitude }))
+          map(result => (
+            { name: result.display_name,
+              lat: coords.latitude,
+              lng: coords.longitude,
+              timezone: tz_lookup(coords.latitude, coords.longitude)
+            }))
         )
       )
     );
@@ -90,6 +97,11 @@ export class LocationService {
       return null;
     }
 
-    return ({name: result.display_name, lat: +result.lat, lng: +result.lng});
+    return ({
+        name: result.display_name,
+        lat: +result.lat,
+        lng: +result.lng,
+        timezone: tz_lookup(+result.lat, +result.lng)
+      });
   }
 }
