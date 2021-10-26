@@ -1,14 +1,18 @@
 import { NgModule } from '@angular/core';
-import { DateFnsPipe } from './date-fns.pipe';
+import { ToLocaleTime, ToLocaleDate, ToLocaleDateTime } from './date-locale.pipe';
 
 @NgModule({
   declarations: [
-    DateFnsPipe
+    ToLocaleTime,
+    ToLocaleDate,
+    ToLocaleDateTime,
   ],
   imports: [
   ],
   exports: [
-      DateFnsPipe
+    ToLocaleTime,
+    ToLocaleDate,
+    ToLocaleDateTime,
   ],
   providers: [
   ]

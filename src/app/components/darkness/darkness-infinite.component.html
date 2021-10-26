@@ -6,7 +6,7 @@
             [class.astronomical-twilight]="section.type === SectionType.ASTRONOMICAL_TWILIGHT"
             [class.night]="section.type === SectionType.NIGHT"
             [class.moon]="section.type === SectionType.MOON"
-            title="{{section.startsAt | dateFns:'HH:mm':timezone}} - {{section.endsAt | dateFns:'HH:mm':timezone}} (UTC: {{section.startsAt | dateFns:'HH:mm':'Etc/UTC'}} - {{section.endsAt | dateFns:'HH:mm':'Etc/UTC'}})"
+            title="{{section.startsAt | toLocaleTime:timezone}} - {{section.endsAt | toLocaleTime:timezone}}"
             [ngStyle]="{'width': (section.totalMinutes / night.totalMinutes * 100) + '%'}">
     </div>
     <div class="info">{{night.startDate.getDate()}}</div>

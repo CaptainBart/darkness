@@ -22,7 +22,6 @@
     "@angular/platform-browser-dynamic": "~11.2.12",
     "@angular/router": "~11.2.12",
     "date-fns": "^2.25.0",
-    "date-fns-tz": "^1.1.6",
     "rxjs": "~6.6.0",
     "suncalc": "^1.8.0",
     "tslib": "^2.0.0",
