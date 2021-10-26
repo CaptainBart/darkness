@@ -1,4 +1,4 @@
-import { startOfDay, addHours } from 'date-fns';
+import { startOfDay } from 'date-fns';
 import { GeoLocation } from './geo-location';
 import * as SunCalc from 'suncalc';
 

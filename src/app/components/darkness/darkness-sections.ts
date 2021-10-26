@@ -1,5 +1,3 @@
-import { addHours, startOfDay, isAfter, isBefore, isDate, differenceInMinutes } from 'date-fns';
-import * as SunCalc from 'suncalc';
 import { CelestialEvents } from './celestial-events';
 import { GeoLocation } from './geo-location';
 
