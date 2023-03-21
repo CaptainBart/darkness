@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { LocationService } from './location.service';
 import { Location } from './location.model';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 
 
 @Component({
@@ -13,14 +13,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./location.component.scss']
 })
 export class LocationComponent implements OnInit {
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   public location$ = this.locationService.location$;
   public fetchingPosition = false;
   public hasLocation$ = this.locationService.hasLocation$;
 
   constructor(
     private readonly locationService: LocationService,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly snackBar: MatSnackBar,
     private readonly router: Router,
   ) {
