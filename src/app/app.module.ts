@@ -5,11 +5,11 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DarknessModule } from './components/darkness/darkness.module';
 import { RouterModule, Routes } from '@angular/router';
-import { MAT_LEGACY_FORM_FIELD_DEFAULT_OPTIONS as MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/legacy-form-field';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { HttpClientModule } from '@angular/common/http';
 
 const routes: Routes = [
-  { path: '', loadChildren: () => import('./shell/shell.module').then(m => m.ShellModule) },
+  { path: '', loadChildren: () => import('./shell/routes') },
 ];
 
 

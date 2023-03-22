@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-list';
+import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { ShellComponent } from './shell.component';
-import { ShellService } from './shell.service';
 import { locationGuard } from '../pages/location/location.guard';
 
 const routes: Routes = [
@@ -27,7 +26,7 @@ const routes: Routes = [
       },
       {
         path: 'year',
-        loadChildren: () => import('../pages/year/year.module').then(m => m.YearModule),
+        loadChildren: () => import('../pages/year/routes'),
         canActivate: [locationGuard]
       },
       {
@@ -40,7 +39,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    ShellComponent,
+    // ShellComponent,
   ],
   imports: [
     CommonModule,
@@ -52,7 +51,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
   ],
   exports: [
-    ShellComponent,
+    // ShellComponent,
   ]
 })
 export class ShellModule { }

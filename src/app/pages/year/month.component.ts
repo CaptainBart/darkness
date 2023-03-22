@@ -1,12 +1,18 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
-import { map, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { DarknessModule } from 'src/app/components/darkness/darkness.module';
 import { ShellService } from 'src/app/shell/shell.service';
 import { LocationService } from '../location/location.service';
 
 @Component({
-  selector: 'app-month',
+  standalone: true,
+  imports:[
+    CommonModule,
+    DarknessModule,
+  ],
   templateUrl: './month.component.html',
   styleUrls: ['./month.component.scss']
 })
