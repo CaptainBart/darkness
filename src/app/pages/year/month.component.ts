@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
 import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
@@ -16,7 +16,7 @@ import { LocationService } from '../location/location.service';
   templateUrl: './month.component.html',
   styleUrls: ['./month.component.scss']
 })
-export class MonthComponent implements OnInit, OnDestroy {
+export class MonthComponent implements OnDestroy {
   private destroy$ = new Subject();
   location$ = this.locationService.location$;
   
@@ -57,9 +57,6 @@ export class MonthComponent implements OnInit, OnDestroy {
 
       this.shellService.changeTitle(`${month}/${year}`);
     });
-  }
-
-  ngOnInit(): void {
   }
 
   ngOnDestroy(): void {
