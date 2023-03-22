@@ -23,7 +23,7 @@ const routes: Routes = [
       },
       {
         path: 'info',
-        loadChildren: () => import('../pages/info/info.module').then(m => m.InfoModule),
+        loadChildren: () => import('../pages/info/routes'),
       },
       {
         path: 'year',
@@ -32,7 +32,7 @@ const routes: Routes = [
       },
       {
         path: 'location',
-        loadChildren: () => import('../pages//location/routes')
+        loadChildren: () => import('../pages/location/routes')
       },
     ]
   }
