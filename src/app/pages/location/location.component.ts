@@ -1,18 +1,36 @@
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { LocationService } from './location.service';
 import { Location } from './location.model';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-
+import { MatSnackBarModule, MatSnackBar, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-location',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
+    ReactiveFormsModule,
+  ],
+  providers: [
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 5000}},
+  ],
   templateUrl: './location.component.html',
   styleUrls: ['./location.component.scss']
 })
-export class LocationComponent implements OnInit {
+export class LocationComponent {
   public form: UntypedFormGroup;
   public location$ = this.locationService.location$;
   public fetchingPosition = false;
@@ -45,9 +63,6 @@ export class LocationComponent implements OnInit {
   public set formLocation(value: Location)
   {
     this.form.setValue(value);
-  }
-
-  ngOnInit(): void {
   }
 
   public fetchCurrentLocation(): void

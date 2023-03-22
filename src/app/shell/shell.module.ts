@@ -9,7 +9,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { ShellComponent } from './shell.component';
 import { ShellService } from './shell.service';
-import { LocationGuard } from '../pages/location/location.guard';
+import { locationGuard } from '../pages/location/location.guard';
 
 const routes: Routes = [
   {
@@ -28,11 +28,11 @@ const routes: Routes = [
       {
         path: 'year',
         loadChildren: () => import('../pages/year/year.module').then(m => m.YearModule),
-        canActivate: [LocationGuard]
+        canActivate: [locationGuard]
       },
       {
         path: 'location',
-        loadChildren: () => import('../pages//location/location.module').then(m => m.LocationModule)
+        loadChildren: () => import('../pages//location/routes')
       },
     ]
   }

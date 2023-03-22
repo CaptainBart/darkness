@@ -1,26 +1,14 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
 import { LocationService } from './location.service';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class LocationGuard implements CanActivate {
-  public constructor(
-    private readonly locationService: LocationService,
-    private readonly router: Router
-  )
-  { }
-
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      if(this.locationService.hasLocation()) {
-        return true;
-      }
-
-      return this.router.parseUrl('/location');
-  }
+export const locationGuard: CanActivateFn = () => {
+  const locationService: LocationService = inject(LocationService);
+  const router: Router = inject(Router);
   
-}
+  if(locationService.hasLocation()) {
+    return true;
+  }
+
+  return router.parseUrl('/location');
+};
