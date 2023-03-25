@@ -1,17 +1,21 @@
 import { addDays, differenceInMinutes, isAfter, isBefore, isDate } from 'date-fns';
 import { CelestialInfo } from './celestial-info';
-import { GeoLocation } from './geo-location';
+import { Location } from '@app/location';
 
 export class CelestialEvents
 {
     public constructor(public readonly todayEvents: CelestialInfo, public readonly tomorrowEvents: CelestialInfo) {
     }
 
-    public static create(date: Date, location: GeoLocation): CelestialEvents
+    public static create(date: Date, location: Location): CelestialEvents
     {
         const today = CelestialInfo.create(date, location);
         const tomorrow = CelestialInfo.create(addDays(date, 1), location);
         return new CelestialEvents(today, tomorrow);
+    }
+
+    public get location(): Location {
+        return this.todayEvents.location;
     }
 
     public get startDate(): Date {

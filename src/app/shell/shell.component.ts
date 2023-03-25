@@ -1,13 +1,29 @@
 import {MediaMatcher} from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterModule } from '@angular/router';
 import { ShellService } from './shell.service';
 
 @Component({
-  selector: 'app-shell',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    RouterModule,
+  ],
   templateUrl: './shell.component.html',
   styleUrls: ['./shell.component.scss']
 })
-export class ShellComponent implements OnInit, OnDestroy {
+export class ShellComponent implements OnDestroy {
   mobileQuery: MediaQueryList;
 
   title$ = this.shellService.title$;
@@ -17,15 +33,20 @@ export class ShellComponent implements OnInit, OnDestroy {
   constructor(private readonly shellService: ShellService, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
-  }
-
-  ngOnInit(): void {
-
+    if (this.mobileQuery.addEventListener) {
+      this.mobileQuery.addEventListener("change", this._mobileQueryListener);
+    } else {
+      this.mobileQuery.addListener(this._mobileQueryListener);
+    }
   }
 
   ngOnDestroy(): void {
-    this.mobileQuery.removeListener(this._mobileQueryListener);
+    if (this.mobileQuery.removeEventListener) {
+      this.mobileQuery.removeEventListener("change", this._mobileQueryListener);
+    } else {
+      this.mobileQuery.removeListener(this._mobileQueryListener);
+    }
+    
   }
 
   previousClicked() {

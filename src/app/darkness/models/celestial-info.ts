@@ -1,5 +1,5 @@
 import { startOfDay } from 'date-fns';
-import { GeoLocation } from './geo-location';
+import { Location } from '@app/location';
 import * as SunCalc from 'suncalc';
 
 export class CelestialInfo
@@ -7,7 +7,7 @@ export class CelestialInfo
     public readonly noon: Date;
 
     public constructor(
-        public readonly location: GeoLocation,
+        public readonly location: Location,
         public readonly sunTimes: SunCalc.GetTimesResult,
         public readonly moonTimes: SunCalc.GetMoonTimes,
         public readonly sunAtNoon: SunCalc.GetSunPositionResult,
@@ -16,7 +16,7 @@ export class CelestialInfo
         this.noon = this.sunTimes.solarNoon;
     }
 
-    public static create(date: Date, location: GeoLocation): CelestialInfo
+    public static create(date: Date, location: Location): CelestialInfo
     {
         const midnight = startOfDay(date);
         const midnightUTC = new Date(Date.UTC(midnight.getFullYear(), midnight.getMonth(), midnight.getDate()));

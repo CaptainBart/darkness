@@ -1,0 +1,16 @@
+<cdk-virtual-scroll-viewport itemSize="16" class="scroller-viewport" [ngStyle]="{'visibility': (loading ? 'hidden' : 'visible')}" (scrolledIndexChange)="onScrolledIndexChanged($event)">
+    <div *cdkVirtualFor="let container of datasource" class="darkness-row">
+        <div *ngFor="let section of container.item.sections"
+                [class.daylight]="section.type === SectionType.DAY"
+                [class.twilight]="section.type === SectionType.TWILIGHT"
+                [class.nautical-twilight]="section.type === SectionType.NAUTICAL_TWILIGHT"
+                [class.astronomical-twilight]="section.type === SectionType.ASTRONOMICAL_TWILIGHT"
+                [class.night]="section.type === SectionType.NIGHT"
+                [class.moon]="section.type === SectionType.MOON"
+                title="{{section.startsAt | toLocaleTime:container.item.location.timezone}} - {{section.endsAt | toLocaleTime:container.item.location.timezone}}"
+                [ngStyle]="{'width': (section.totalMinutes / container.item.totalMinutes * 100) + '%'}">
+        </div>
+        <div class="info">{{container.item.startDate.getDate()}}</div>
+    </div>
+</cdk-virtual-scroll-viewport>
+
