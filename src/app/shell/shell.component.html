@@ -5,13 +5,7 @@
        </button>
        <span>Darkness</span>
        <span class="spacer"></span>
-       <button mat-icon-button (click)="previousClicked()">
-         <mat-icon>arrow_left</mat-icon>
-       </button>
        <span>{{title$ | async}}</span>
-       <button  mat-icon-button (click)="nextClicked()">
-        <mat-icon>arrow_right</mat-icon>
-      </button>
      </mat-toolbar>
 
     <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">

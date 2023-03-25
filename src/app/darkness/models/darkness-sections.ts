@@ -1,14 +1,16 @@
 import { CelestialEvents } from './celestial-events';
-import { GeoLocation } from './geo-location';
+import { Location } from '@app/location';
 
 export class DarknessSections {
     public sections: Section[] = [];
 
-    public constructor(private readonly events: CelestialEvents) {
+    public constructor(
+        private readonly events: CelestialEvents
+    ) {
         this.addDaylightSections();
     }
 
-    public static create(date: Date, location: GeoLocation): DarknessSections
+    public static create(date: Date, location: Location): DarknessSections
     {
         const events = CelestialEvents.create(date, location);
         return new DarknessSections(events);
@@ -16,6 +18,10 @@ export class DarknessSections {
 
     public get startDate(): Date {
         return this.events.startDate;
+    }
+
+    public get location(): Location {
+        return this.events.location;
     }
 
     public get totalMinutes(): number {

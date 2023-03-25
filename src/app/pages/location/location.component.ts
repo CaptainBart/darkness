@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { take } from 'rxjs/operators';
-import { LocationService } from './location.service';
-import { Location } from './location.model';
 import { MatSnackBarModule, MatSnackBar, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -11,6 +8,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import { take } from 'rxjs/operators';
+import { LocationService, LocationLookupService, Location } from '@app/location';
+
+const INITIAL_LOCATION: Location = {
+  name: 'Roque de los Muchachos',
+  lat: 28.764035,
+  lng: -17.894234,
+  timezone: 'Atlantic/Canary'
+};
+
 
 @Component({
   standalone: true,
@@ -38,6 +45,7 @@ export class LocationComponent {
 
   constructor(
     private readonly locationService: LocationService,
+    private readonly lookupService: LocationLookupService,
     private readonly formBuilder: UntypedFormBuilder,
     private readonly snackBar: MatSnackBar,
     private readonly router: Router,
@@ -52,7 +60,7 @@ export class LocationComponent {
     this.location$.pipe(
       take(1)
     ).subscribe(
-      (location: Location) => this.formLocation = location
+      (location: Location) => this.formLocation = location ?? INITIAL_LOCATION
     );
   }
 
@@ -68,7 +76,7 @@ export class LocationComponent {
   public fetchCurrentLocation(): void
   {
     this.form.disable();
-    this.locationService.fetchCurrentLocation().subscribe(
+    this.lookupService.fetchCurrentLocation().subscribe(
       (location => {
         console.dir(location);
         this.formLocation = location;
@@ -83,7 +91,7 @@ export class LocationComponent {
   public fetchLocationByName(): void
   {
     this.form.disable();
-    this.locationService.fetchLocation(this.formLocation.name).subscribe(
+    this.lookupService.fetchLocation(this.formLocation.name).subscribe(
       (location => {
         if(location) {
           this.formLocation = location;

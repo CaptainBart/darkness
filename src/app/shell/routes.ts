@@ -9,21 +9,21 @@ const ROUTES: Route[] = [
       children: [
         {
           path: '',
-          redirectTo: 'year',
+          redirectTo: 'diagram',
           pathMatch: 'full',
         },
         {
           path: 'info',
-          loadChildren: () => import('../pages/info/routes'),
+          loadChildren: () => import('@app/pages/info/routes'),
         },
         {
-          path: 'year',
-          loadChildren: () => import('../pages/year/routes'),
+          path: 'diagram',
+          loadChildren: () => import('@app/pages/diagram/routes'),
           canActivate: [locationGuard]
         },
         {
           path: 'location',
-          loadChildren: () => import('../pages/location/routes')
+          loadChildren: () => import('@app/pages/location/routes'),
         },
       ]
     }
