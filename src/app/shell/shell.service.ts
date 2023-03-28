@@ -13,8 +13,6 @@ export class ShellService {
 
     private titleSubject = new BehaviorSubject('');
     public title$ = this.titleSubject.asObservable();
-
-    constructor() { }
     
     public previousClick(): void {
         this.previousClickedSubject.next();
