@@ -5,10 +5,10 @@ import { BehaviorSubject, Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class ShellService {
-    private previousClickedSubject = new Subject();
+    private previousClickedSubject = new Subject<void>();
     public previousClicked$ = this.previousClickedSubject.asObservable();
 
-    private nextClickedSubject = new Subject();
+    private nextClickedSubject = new Subject<void>();
     public nextClicked$ = this.nextClickedSubject.asObservable();
 
     private titleSubject = new BehaviorSubject('');
