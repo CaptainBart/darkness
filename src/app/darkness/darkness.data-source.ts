@@ -5,7 +5,7 @@ import { DarknessService } from './darkness.service';
 import { DarknessSections } from './models/darkness-sections';
 import { Observable } from 'rxjs';
 
-const totalNumberOfDays = 1000 * 365;
+const totalNumberOfDays = 100 * 365;
 const loadThreshold = 90;
 export class DarknessDataSource extends VirtualInfiniteScrollDataSource<Date, DarknessSections> {
     #service: DarknessService;
