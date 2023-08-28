@@ -1,6 +1,6 @@
 import {MediaMatcher} from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -8,6 +8,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { ShellService } from './shell.service';
+import { PwaService } from '@app/shared/pwa-service';
 
 @Component({
   standalone: true,
@@ -24,8 +25,11 @@ import { ShellService } from './shell.service';
   styleUrls: ['./shell.component.scss']
 })
 export class ShellComponent implements OnDestroy {
+  private pwa: PwaService = inject(PwaService);
   mobileQuery: MediaQueryList;
 
+  canInstall$ = this.pwa.canInstall$;
+  hasUpdate$ = this.pwa.checkForUpdates();
   title$ = this.shellService.title$;
 
   private _mobileQueryListener: () => void;
@@ -55,5 +59,13 @@ export class ShellComponent implements OnDestroy {
 
   nextClicked() {
     this.shellService.nextClick();
+  }
+
+  installApp() {
+    this.pwa.install();
+  }
+
+  updateApp() {
+    this.pwa.update();
   }
 }
