@@ -1,3 +1,21 @@
-<ng-container>
-    <app-darkness (dateChange)="onDateChanged($event)"></app-darkness>
-</ng-container>
+<div class="container">
+<app-darkness (dateChange)="onDateChanged($event)"></app-darkness>
+<mat-toolbar color="primary">
+    <div *ngIf="events" class="celestial-events">
+        <span>{{events.sunset | date: 'HH:mm' }}</span>
+        <span>{{events.sunrise | date: 'HH:mm' }}</span>
+
+        <span>{{events.civilDuskEnd | date: 'HH:mm' }}</span>
+        <span>{{events.civilDawnStart | date: 'HH:mm' }}</span>
+        
+        <span>{{events.nauticalDuskEnd | date: 'HH:mm' }}</span>
+        <span>{{events.nauticalDawnStart | date: 'HH:mm' }}</span>
+
+        <span>{{events.astronomicalDuskEnd | date: 'HH:mm' }}</span>
+        <span>{{events.astronomicalDawnStart | date: 'HH:mm' }}</span>
+
+        <span>{{events.moonrise | date: 'HH:mm' }}</span>
+        <span>{{events.moonset | date: 'HH:mm' }}</span>
+    </div>
+</mat-toolbar>
+</div>

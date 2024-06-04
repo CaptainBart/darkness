@@ -5,7 +5,7 @@ export class DarknessSections {
     public sections: Section[] = [];
 
     public constructor(
-        private readonly events: CelestialEvents
+        public readonly events: CelestialEvents
     ) {
         this.addDaylightSections();
     }
