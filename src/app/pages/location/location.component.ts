@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component, effect, inject } from '@angular/core';
+import { ReactiveFormsModule, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBarModule, MatSnackBar, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,7 +8,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
-import { take } from 'rxjs/operators';
 import { LocationService, LocationLookupService, Location } from '@app/location';
 
 const INITIAL_LOCATION: Location = {
@@ -22,7 +21,6 @@ const INITIAL_LOCATION: Location = {
 @Component({
   standalone: true,
   imports: [
-    CommonModule,
     MatInputModule,
     MatFormFieldModule,
     MatIconModule,
@@ -38,77 +36,61 @@ const INITIAL_LOCATION: Location = {
   styleUrls: ['./location.component.css']
 })
 export class LocationComponent {
-  public form: UntypedFormGroup;
-  public location$ = this.locationService.location$;
-  public fetchingPosition = false;
-  public hasLocation$ = this.locationService.hasLocation$;
+  #locationService = inject(LocationService);
+  #lookupService = inject(LocationLookupService);
+  #formBuilder = inject(UntypedFormBuilder);
+  #snackBar = inject(MatSnackBar);
+  #router = inject(Router);
 
-  constructor(
-    private readonly locationService: LocationService,
-    private readonly lookupService: LocationLookupService,
-    private readonly formBuilder: UntypedFormBuilder,
-    private readonly snackBar: MatSnackBar,
-    private readonly router: Router,
-  ) {
-    this.form = this.formBuilder.group({
-      'name': ['', Validators.required],
-      'lat': ['', Validators.required],
-      'lng': ['', Validators.required],
-      'timezone': ['', Validators.required],
+  form = this.#formBuilder.group({
+    'name': ['', Validators.required],
+    'lat': ['', Validators.required],
+    'lng': ['', Validators.required],
+    'timezone': ['', Validators.required],
+  });
+
+  public hasLocation = this.#locationService.hasLocation;
+
+  public constructor() {
+    effect(() => {
+      const location = this.#locationService.location();
+      this.form.setValue(location ?? INITIAL_LOCATION);
     });
-
-    this.location$.pipe(
-      take(1)
-    ).subscribe(
-      (location) => this.formLocation = location ?? INITIAL_LOCATION
-    );
   }
-
-  public get formLocation(): Location
-  {
-    return this.form.value;
-  }
-  public set formLocation(value: Location)
-  {
-    this.form.setValue(value);
-  }
-
-  public fetchCurrentLocation(): void
+    
+  public async fetchCurrentLocation(): Promise<void>
   {
     this.form.disable();
-    this.lookupService.fetchCurrentLocation().subscribe(
-      (location => {
-        console.dir(location);
-        this.formLocation = location;
-        this.form.enable();
-      }),
-      () => {
-        this.form.enable();
-      }
-    );
+    try {
+      const location = await this.#lookupService.fetchCurrentLocation();
+      console.dir(location);
+      this.form.setValue(location);
+    } finally {
+      this.form.enable();
+    }
   }
 
-  public fetchLocationByName(): void
+  public async fetchLocationByName(): Promise<void>
   {
     this.form.disable();
-    this.lookupService.fetchLocation(this.formLocation.name).subscribe(
-      (location => {
-        if(location) {
-          this.formLocation = location;
-        }  else {
-          this.snackBar.open('Location not found.', '');
-        }    
-        this.form.enable();
-      }),
-      () => {
-        this.form.enable();
+    try {
+      console.dir(this.form.value);
+      const location = await this.#lookupService.fetchLocation(this.form.value.name);
+
+      if (!location) {
+        this.#snackBar.open('Location not found.', '');
+        return;
       }
-    );
+
+      this.form.setValue(location);
+    } finally {
+      this.form.enable();
+    }
   }
 
   public storePosition(): void
   {
-    this.locationService.changeLocation(this.formLocation);
-    this.router.navigateByUrl('/');
+    this.#locationService.changeLocation(this.form.value);
+    this.#router.navigateByUrl('/');
   }
 }

@@ -3,17 +3,24 @@
         <mat-form-field class="w100">
             <mat-label>Location</mat-label>
             <input matInput #nameControl formControlName="name" />
-            <button *ngIf="!form.disabled" mat-icon-button matSuffix (click)="fetchLocationByName()">
+            @if (!form.disabled) {
+            <button mat-icon-button matSuffix (click)="fetchLocationByName()">
                 <mat-icon>search</mat-icon>
             </button>
-            <button *ngIf="!form.disabled" mat-icon-button matSuffix (click)="fetchCurrentLocation()">
+            }
+            @if (!form.disabled) {
+            <button mat-icon-button matSuffix (click)="fetchCurrentLocation()">
                 <mat-icon>my_location</mat-icon>
             </button>
-            <button *ngIf="!form.disabled && nameControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="nameControl.value=''">
+            }
+            @if (!form.disabled && nameControl.value) {
+            <button matSuffix mat-icon-button aria-label="Clear" (click)="nameControl.value=''">
                 <mat-icon>close</mat-icon>
             </button>
-            
-            <mat-spinner *ngIf="form.disabled" matSuffix diameter="24"></mat-spinner>
+            }
+            @if (form.disabled) {
+            <mat-spinner matSuffix diameter="24"></mat-spinner>
+            }
         </mat-form-field>
     </div>
     <div>
@@ -28,6 +35,9 @@
     </div>
     <div style="text-align: center;">
         <button mat-raised-button color="primary" [disabled]="form.disabled" (click)="storePosition()">Save</button>
-        <a *ngIf="hasLocation$ | async" routerLink="/year" mat-raised-button>Cancel</a>
+
+        @if (hasLocation()) {
+            <a routerLink="/" mat-raised-button>Cancel</a>
+        }
     </div>
 </form>

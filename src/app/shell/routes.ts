@@ -17,10 +17,10 @@ const ROUTES: Route[] = [
         //   loadChildren: () => import('@app/pages/diagram/routes'),
         //   canActivate: [locationGuard]
         // },
-        // {
-        //   path: 'location',
-        //   loadChildren: () => import('@app/pages/location/routes'),
-        // },
+        {
+          path: 'location',
+          loadChildren: () => import('@app/pages/location/routes'),
+        },
         {
           path: 'info',
           loadChildren: () => import('@app/pages/info/routes'),
