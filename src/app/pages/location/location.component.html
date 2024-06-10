@@ -1,0 +1,33 @@
+<form [formGroup]="form">
+    <div style="text-align: center;">
+        <mat-form-field class="w100">
+            <mat-label>Location</mat-label>
+            <input matInput #nameControl formControlName="name" />
+            <button *ngIf="!form.disabled" mat-icon-button matSuffix (click)="fetchLocationByName()">
+                <mat-icon>search</mat-icon>
+            </button>
+            <button *ngIf="!form.disabled" mat-icon-button matSuffix (click)="fetchCurrentLocation()">
+                <mat-icon>my_location</mat-icon>
+            </button>
+            <button *ngIf="!form.disabled && nameControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="nameControl.value=''">
+                <mat-icon>close</mat-icon>
+            </button>
+            
+            <mat-spinner *ngIf="form.disabled" matSuffix diameter="24"></mat-spinner>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field class="w50">
+            <mat-label>Latitude</mat-label>
+            <input matInput formControlName="lat" readonly="readonly">
+        </mat-form-field>
+        <mat-form-field class="w50">
+            <mat-label>Longitude</mat-label>
+            <input matInput formControlName="lng" readonly="readonly">
+        </mat-form-field>
+    </div>
+    <div style="text-align: center;">
+        <button mat-raised-button color="primary" [disabled]="form.disabled" (click)="storePosition()">Save</button>
+        <a *ngIf="hasLocation$ | async" routerLink="/year" mat-raised-button>Cancel</a>
+    </div>
+</form>
