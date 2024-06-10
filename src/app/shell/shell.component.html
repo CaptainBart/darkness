@@ -5,7 +5,7 @@
        </button>
        <span>Darkness</span>
        <span class="spacer"></span>
-       <span>{{title$ | async}}</span>
+       <span>{{title()}}</span>
      </mat-toolbar>
 
     <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
@@ -23,14 +23,19 @@
           <mat-icon matListItemIcon>info</mat-icon>
           <p matListItemLine>About</p>
         </a>
-        <a mat-list-item *ngIf="canInstall$ | async" (click)="installApp()">
-          <mat-icon matListItemIcon>install_mobile</mat-icon>
-          <p matListItemLine>Install</p>
-        </a>
-        <!-- <a mat-list-item *ngIf="hasUpdate$ | async" (click)="updateApp()">
+        @if(canInstall()) {
+          <a mat-list-item (click)="installApp()">
+            <mat-icon matListItemIcon>install_mobile</mat-icon>
+            <p matListItemLine>Install</p>
+          </a>
+        }
+        
+        
+        <!-- <a mat-list-item (click)="updateApp()">
           <mat-icon matListItemIcon>refresh</mat-icon>
           <p matListItemLine>Update</p>
         </a> -->
+        
       </mat-nav-list>
     </mat-sidenav>
 

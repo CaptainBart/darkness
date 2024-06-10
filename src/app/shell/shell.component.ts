@@ -1,6 +1,6 @@
 import {MediaMatcher} from '@angular/cdk/layout';
-import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -13,7 +13,6 @@ import { ShellService } from '@app/shared/shell.service';
 @Component({
   standalone: true,
   imports: [
-    CommonModule,
     MatButtonModule,
     MatIconModule,
     MatListModule,
@@ -31,25 +30,16 @@ export class ShellComponent implements OnDestroy {
   readonly #media = inject(MediaMatcher);
   readonly #mobileQueryListener = () => this.#changeDetectorRef.detectChanges();
   readonly mobileQuery = this.#media.matchMedia('(max-width: 600px)');
-  readonly canInstall$ = this.#pwa.canInstall$;
-  readonly hasUpdate$ = this.#pwa.checkForUpdates();
-  readonly title$ = this.#shellService.title$;
+  readonly canInstall = toSignal(this.#pwa.canInstall$, {initialValue: false });
+  readonly hasUpdate = toSignal(this.#pwa.checkForUpdates(), {initialValue: false });
+  readonly title = toSignal(this.#shellService.title$, {initialValue:''});
 
   constructor() {
-    if (this.mobileQuery.addEventListener) {
-      this.mobileQuery.addEventListener("change", this.#mobileQueryListener);
-    } else {
-      this.mobileQuery.addListener(this.#mobileQueryListener);
-    }
+    this.mobileQuery.addEventListener("change", this.#mobileQueryListener);
   }
 
   ngOnDestroy(): void {
-    if (this.mobileQuery.removeEventListener) {
-      this.mobileQuery.removeEventListener("change", this.#mobileQueryListener);
-    } else {
-      this.mobileQuery.removeListener(this.#mobileQueryListener);
-    }
-    
+    this.mobileQuery.removeEventListener("change", this.#mobileQueryListener);
   }
 
   previousClicked() {
