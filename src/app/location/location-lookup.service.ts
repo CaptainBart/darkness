@@ -1,52 +1,43 @@
-import { Injectable } from '@angular/core';
-import { bindCallback, Observable, of } from 'rxjs';
-import { map, mergeMap, take } from 'rxjs/operators';
+import { inject, Injectable } from '@angular/core';
 import { GeocodingService, SearchResult } from './geocoding.service';
 import { Location } from './location.model';
 import tz_lookup from "tz-lookup";
 
 @Injectable({providedIn: 'root'})
 export class LocationLookupService {
-  constructor(
-    private readonly geocodingService: GeocodingService
-  ) { }
+  #geocodingService = inject(GeocodingService);
 
-  public fetchGpsLocation(): Observable<GeolocationPosition>
+  public fetchGpsLocation(): Promise<GeolocationPosition>
   {
-    const getCurrentPosition = bindCallback(
-      (cb: PositionCallback) => window.navigator.geolocation.getCurrentPosition(cb)
-    );
-    
-    return getCurrentPosition().pipe(
-      take(1)
-    );
+    return new Promise((resolve, reject) => {
+      window.navigator.geolocation.getCurrentPosition(resolve, reject);
+    });
   }
 
-  public fetchCurrentLocation(): Observable<Location>
+  public async fetchCurrentLocation(): Promise<Location>
   {
-    return this.fetchGpsLocation().pipe(
-      map(position => position.coords),
-      mergeMap(
-        coords => this.geocodingService.reverse(coords.latitude, coords.longitude).pipe(
-          map(result => (
-            { name: result.display_name,
-              lat: coords.latitude,
-              lng: coords.longitude,
-              timezone: tz_lookup(coords.latitude, coords.longitude)
-            }))
-        )
-      )
-    );
+    const position = await this.fetchGpsLocation();
+    const location = {
+      lat: position.coords.latitude,
+      lng: position.coords.longitude,
+    };
+
+    const result = await this.#geocodingService.reverse(location.lat, location.lng);
+    return ({
+      ...location,
+      name: result.display_name,
+      timezone: tz_lookup(location.lat, location.lng)
+    });
+
   }
 
-  public fetchLocation(name: string): Observable<Location>
+  public async fetchLocation(name: string): Promise<Location | undefined>
   {
-    return this.geocodingService.search(name).pipe(
-      map(results => this.findBestMatch(results))
-    );
+    const results = await this.#geocodingService.search(name);
+    return this.findBestMatch(results);
   }
 
-  private findBestMatch(results: SearchResult[]): Location
+  private findBestMatch(results: SearchResult[]): Location | undefined
   {
     let result = results.find(result => result.category === 'boundary');
     if(!result && results.length > 0) {
@@ -54,7 +45,7 @@ export class LocationLookupService {
     }
 
     if(!result) {
-      return null;
+      return undefined;
     }
 
     return ({

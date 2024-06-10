@@ -1,28 +1,23 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Injectable, inject } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 
 const NOMATIM_URL = 'https://nominatim.openstreetmap.org';
 
 @Injectable({providedIn: 'root'})
 export class GeocodingService {
-    public constructor(private readonly httpClient: HttpClient) {
-
+    #httpClient = inject(HttpClient);
+    
+    public async search(query: string): Promise<SearchResult[]>
+    {
+        const results = await firstValueFrom(this.#httpClient.get<SearchResult[]>(`${NOMATIM_URL}/search?q=${query}&zoom=10&format=jsonv2`));
+        return results.map(result => this.map(result));
     }
 
-    public search(query: string): Observable<SearchResult[]>
+    public async reverse(lat: number, lng: number): Promise<SearchResult>
     {
-        return this.httpClient.get<SearchResult[]>(`${NOMATIM_URL}/search?q=${query}&zoom=10&format=jsonv2`).pipe(
-            map(results => results.map(result => this.map(result)))
-        );
-    }
-
-    public reverse(lat: number, lng: number): Observable<SearchResult>
-    {
-        return this.httpClient.get<SearchResult>(`${NOMATIM_URL}/reverse?lat=${lat}&lon=${lng}&zoom=10&format=jsonv2`).pipe(
-            map(result => this.map(result))
-        );
+        const result = await firstValueFrom(this.#httpClient.get<SearchResult>(`${NOMATIM_URL}/reverse?lat=${lat}&lon=${lng}&zoom=10&format=jsonv2`));
+        return this.map(result);
     }
 
     private map(result: SearchResult): SearchResult
