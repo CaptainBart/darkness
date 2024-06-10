@@ -7,7 +7,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { CommonModule } from '@angular/common';
 import { LocationService, LocationLookupService, Location } from '@app/location';
 
 const INITIAL_LOCATION: Location = {
