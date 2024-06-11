@@ -1,21 +1,20 @@
 import { inject, Injectable } from '@angular/core';
 import { GeocodingService, SearchResult } from './geocoding.service';
 import { Location } from './location.model';
-import tz_lookup from "tz-lookup";
+//import tz_lookup from "tz-lookup";
+import tz_lookup from '@photostructure/tz-lookup';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class LocationLookupService {
-  #geocodingService = inject(GeocodingService);
+  readonly #geocodingService = inject(GeocodingService);
 
-  public fetchGpsLocation(): Promise<GeolocationPosition>
-  {
+  fetchGpsLocation(): Promise<GeolocationPosition> {
     return new Promise((resolve, reject) => {
       window.navigator.geolocation.getCurrentPosition(resolve, reject);
     });
   }
 
-  public async fetchCurrentLocation(): Promise<Location>
-  {
+  async fetchCurrentLocation(): Promise<Location> {
     const position = await this.fetchGpsLocation();
     const location = {
       lat: position.coords.latitude,
@@ -31,28 +30,26 @@ export class LocationLookupService {
 
   }
 
-  public async fetchLocation(name: string): Promise<Location | undefined>
-  {
+  async fetchLocation(name: string): Promise<Location | undefined> {
     const results = await this.#geocodingService.search(name);
-    return this.findBestMatch(results);
+    return this.#findBestMatch(results);
   }
 
-  private findBestMatch(results: SearchResult[]): Location | undefined
-  {
+  #findBestMatch(results: SearchResult[]): Location | undefined {
     let result = results.find(result => result.category === 'boundary');
-    if(!result && results.length > 0) {
+    if (!result && results.length > 0) {
       result = results[0];
     }
 
-    if(!result) {
+    if (!result) {
       return undefined;
     }
 
     return ({
-        name: result.display_name,
-        lat: +result.lat,
-        lng: +result.lng,
-        timezone: tz_lookup(+result.lat, +result.lng)
-      });
+      name: result.display_name,
+      lat: +result.lat,
+      lng: +result.lng,
+      timezone: tz_lookup(+result.lat, +result.lng)
+    });
   }
 }

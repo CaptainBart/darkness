@@ -29,36 +29,35 @@ const INITIAL_LOCATION: Location = {
     ReactiveFormsModule,
   ],
   providers: [
-    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 5000}},
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5000 } },
   ],
   templateUrl: './location.component.html',
   styleUrls: ['./location.component.css']
 })
 export class LocationComponent {
-  #locationService = inject(LocationService);
-  #lookupService = inject(LocationLookupService);
-  #formBuilder = inject(UntypedFormBuilder);
-  #snackBar = inject(MatSnackBar);
-  #router = inject(Router);
+  readonly #locationService = inject(LocationService);
+  readonly #lookupService = inject(LocationLookupService);
+  readonly #formBuilder = inject(UntypedFormBuilder);
+  readonly #snackBar = inject(MatSnackBar);
+  readonly #router = inject(Router);
 
-  form = this.#formBuilder.group({
+  readonly form = this.#formBuilder.group({
     'name': ['', Validators.required],
     'lat': ['', Validators.required],
     'lng': ['', Validators.required],
     'timezone': ['', Validators.required],
   });
 
-  public hasLocation = this.#locationService.hasLocation;
+  readonly hasLocation = this.#locationService.hasLocation;
 
-  public constructor() {
+  constructor() {
     effect(() => {
       const location = this.#locationService.location();
       this.form.setValue(location ?? INITIAL_LOCATION);
     });
   }
-    
-  public async fetchCurrentLocation(): Promise<void>
-  {
+
+  async fetchCurrentLocation(): Promise<void> {
     this.form.disable();
     try {
       const location = await this.#lookupService.fetchCurrentLocation();
@@ -69,8 +68,7 @@ export class LocationComponent {
     }
   }
 
-  public async fetchLocationByName(): Promise<void>
-  {
+  async fetchLocationByName(): Promise<void> {
     this.form.disable();
     try {
       console.dir(this.form.value);
@@ -87,8 +85,7 @@ export class LocationComponent {
     }
   }
 
-  public storePosition(): void
-  {
+  storePosition(): void {
     this.#locationService.changeLocation(this.form.value);
     this.#router.navigateByUrl('/');
   }
