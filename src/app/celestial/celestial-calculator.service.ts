@@ -1,9 +1,9 @@
-import { startOfDay, addDays, differenceInMinutes, isDate, isAfter, isBefore } from 'date-fns';
-import * as SunCalc from 'suncalc';
+import { Injectable } from '@angular/core';
 import { Location } from "@app/location";
+import { addDays, differenceInMinutes, isAfter, isBefore, isDate, startOfDay } from 'date-fns';
+import * as SunCalc from 'suncalc';
 import { CelestialInfo } from "./celestial-info.model";
 import { CelestialEvents } from './celetial-events.model';
-import { Injectable } from '@angular/core';
 
 const sunriseAltitude = 0;
 const moonriseAltitude = 0;
@@ -141,6 +141,6 @@ export class CelestialCalculatorService {
       moonUpAtNightEnd: moonUpAtNightEnd(events),
     }
 
-    return <CelestialEvents>events;
+    return events as CelestialEvents;
   }
 }

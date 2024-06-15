@@ -1,0 +1,10 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "never",
+    "source.fixAll.eslint": "always",
+    "source.fixAll.stylelint": "always",
+    "source.organizeImports": "always"
+  },
+  "eslint.format.enable": true,
+  "eslint.validate": ["html", "javascript", "typescript"]
+}

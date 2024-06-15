@@ -1,4 +1,3 @@
-import { CelestialInfo } from "./celestial-info.model";
 
 export interface CelestialEvents {
   // todayEvents: CelestialInfo;

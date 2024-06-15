@@ -1,4 +1,3 @@
-import { Location } from "@app/location";
 import * as SunCalc from 'suncalc';
 
 export interface CelestialInfo {
