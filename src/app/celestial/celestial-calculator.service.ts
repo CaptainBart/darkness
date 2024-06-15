@@ -15,11 +15,11 @@ type pickEventDateFn = (today: Date, tomorrow: Date) => Date | undefined;
 
 const createEventPicker = (startDate: Date, endDate: Date): pickEventDateFn => {
   return (today: Date, tomorrow: Date): Date | undefined => {
-    if (today != null && isDate(today) && isAfter(today, startDate)) {
+    if (isDate(today) && isAfter(today, startDate)) {
       return today;
     }
 
-    if (tomorrow != null && isDate(tomorrow) && isBefore(tomorrow, endDate)) {
+    if (isDate(tomorrow) && isBefore(tomorrow, endDate)) {
       return tomorrow;
     }
 

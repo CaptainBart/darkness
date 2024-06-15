@@ -14,6 +14,7 @@ module.exports = tseslint.config(
     extends: [
       eslint.configs.recommended,
       ...tseslint.configs.recommendedTypeChecked,
+      ...tseslint.configs.strictTypeChecked,
       ...tseslint.configs.stylisticTypeChecked,
       ...angular.configs.tsRecommended
     ],
@@ -41,12 +42,21 @@ module.exports = tseslint.config(
             "ignoreStatic": true
         }
       ],
+      "@typescript-eslint/restrict-template-expressions": [
+        "error",
+        {
+          allowBoolean: true,
+          allowNullish: true,
+          allowNumber: true,
+          allowRegExp: true
+        }
+      ],
     },
   },
   {
     files: ["**/*.html"],
     extends: [
-      ...angular.configs.templateRecommended,
+      ...angular.configs.templateRecommended
       // ...angular.configs.templateAccessibility,
     ],
     rules: {},

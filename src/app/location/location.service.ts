@@ -11,7 +11,7 @@ const fetchLocationFromStorage = (): Location | undefined => {
   return JSON.parse(persistedValue) as Location | undefined;
 }
 
-const storeLocationToStorage = (location: Location) => window.localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(location));
+const storeLocationToStorage = (location: Location) => { window.localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(location)); }
 
 @Injectable({ providedIn: 'root' })
 export class LocationService {

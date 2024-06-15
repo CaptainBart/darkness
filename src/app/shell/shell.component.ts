@@ -29,7 +29,7 @@ export class ShellComponent implements OnDestroy {
   readonly #changeDetectorRef = inject(ChangeDetectorRef);
   readonly #media = inject(MediaMatcher);
 
-  readonly #mobileQueryListener = () => this.#changeDetectorRef.detectChanges();
+  readonly #mobileQueryListener = () => { this.#changeDetectorRef.detectChanges(); }
   readonly mobileQuery = this.#media.matchMedia('(max-width: 600px)');
   readonly canInstall = toSignal(this.#pwa.canInstall$, { initialValue: false });
   readonly hasUpdate = toSignal(this.#pwa.checkForUpdates(), { initialValue: false });
