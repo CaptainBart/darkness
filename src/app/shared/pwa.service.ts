@@ -1,7 +1,7 @@
 import { DOCUMENT } from "@angular/common";
 import { ApplicationRef, Injectable, inject } from "@angular/core";
 import { SwUpdate } from "@angular/service-worker";
-import { BehaviorSubject, Observable, first, from, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, from, switchMap } from 'rxjs';
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
