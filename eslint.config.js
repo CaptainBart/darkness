@@ -6,11 +6,16 @@ const angular = require("angular-eslint");
 module.exports = tseslint.config(
   {
     files: ["**/*.ts"],
+    languageOptions: {
+      parserOptions: {
+        project: ["tsconfig.lint.json"]
+      }
+    },
     extends: [
       eslint.configs.recommended,
-      ...tseslint.configs.recommended,
-      ...tseslint.configs.stylistic,
-      ...angular.configs.tsRecommended,
+      ...tseslint.configs.recommendedTypeChecked,
+      ...tseslint.configs.stylisticTypeChecked,
+      ...angular.configs.tsRecommended
     ],
     processor: angular.processInlineTemplates,
     rules: {
@@ -29,6 +34,12 @@ module.exports = tseslint.config(
           prefix: "app",
           style: "kebab-case",
         },
+      ],
+      "@typescript-eslint/unbound-method": [
+        "error",
+        {
+            "ignoreStatic": true
+        }
       ],
     },
   },

@@ -1,4 +1,4 @@
-import {MediaMatcher} from '@angular/cdk/layout';
+import { MediaMatcher } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, OnDestroy, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
@@ -28,12 +28,12 @@ export class ShellComponent implements OnDestroy {
   readonly #pwa = inject(PwaService);
   readonly #changeDetectorRef = inject(ChangeDetectorRef);
   readonly #media = inject(MediaMatcher);
-  
+
   readonly #mobileQueryListener = () => this.#changeDetectorRef.detectChanges();
   readonly mobileQuery = this.#media.matchMedia('(max-width: 600px)');
-  readonly canInstall = toSignal(this.#pwa.canInstall$, {initialValue: false });
-  readonly hasUpdate = toSignal(this.#pwa.checkForUpdates(), {initialValue: false });
-  readonly title = toSignal(this.#shellService.title$, {initialValue:''});
+  readonly canInstall = toSignal(this.#pwa.canInstall$, { initialValue: false });
+  readonly hasUpdate = toSignal(this.#pwa.checkForUpdates(), { initialValue: false });
+  readonly title = toSignal(this.#shellService.title$, { initialValue: '' });
 
   constructor() {
     this.mobileQuery.addEventListener("change", this.#mobileQueryListener);
@@ -51,8 +51,8 @@ export class ShellComponent implements OnDestroy {
     this.#shellService.nextClick();
   }
 
-  installApp() {
-    this.#pwa.install();
+  async installApp(): Promise<void> {
+    await this.#pwa.install();
   }
 
   updateApp() {

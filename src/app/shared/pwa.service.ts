@@ -43,20 +43,20 @@ export class PwaService {
     }
   }
 
-  public install(): void {
+  public async install(): Promise<void> {
     if (this.#promptEvent == undefined) {
       return;
     }
 
-    this.#promptEvent.prompt();
-    this.#promptEvent.userChoice.then((result) => {
-      if (result.outcome === 'accepted') {
-        console.log('user accepted add to homescreen');
-      } else {
-        console.log('user dismissed the add to homescreen');
-      }
+    await this.#promptEvent.prompt();
+    const result = await this.#promptEvent.userChoice;
 
-      this.#canInstall.next(false);
-    });
+    if (result.outcome === 'accepted') {
+      console.log('user accepted add to homescreen');
+    } else {
+      console.log('user dismissed the add to homescreen');
+    }
+
+    this.#canInstall.next(false);
   }
 }

@@ -1,13 +1,13 @@
 import { Component, effect, inject } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { MatSnackBarModule, MatSnackBar, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { LocationService, LocationLookupService, Location } from '@app/location';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { Location, LocationLookupService, LocationService } from '@app/location';
 
 const INITIAL_LOCATION: Location = {
   name: 'Roque de los Muchachos',
@@ -69,10 +69,15 @@ export class LocationComponent {
   }
 
   async fetchLocationByName(): Promise<void> {
+    const formValue = this.form.value as Partial<Location>;
+    console.dir(formValue);
+    if (!formValue.name) {
+      return;
+    }
+
     this.form.disable();
     try {
-      console.dir(this.form.value);
-      const location = await this.#lookupService.fetchLocation(this.form.value.name);
+      const location = await this.#lookupService.fetchLocation(formValue.name);
 
       if (!location) {
         this.#snackBar.open('Location not found.', '');
@@ -85,8 +90,9 @@ export class LocationComponent {
     }
   }
 
-  storePosition(): void {
-    this.#locationService.changeLocation(this.form.value);
-    this.#router.navigateByUrl('/');
+  async storePosition(): Promise<void> {
+    const formValue = this.form.value as Location;
+    this.#locationService.changeLocation(formValue);
+    await this.#router.navigateByUrl('/');
   }
 }

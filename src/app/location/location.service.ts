@@ -8,7 +8,7 @@ const fetchLocationFromStorage = (): Location | undefined => {
     return undefined;
   }
 
-  return JSON.parse(persistedValue);
+  return JSON.parse(persistedValue) as Location | undefined;
 }
 
 const storeLocationToStorage = (location: Location) => window.localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(location));
