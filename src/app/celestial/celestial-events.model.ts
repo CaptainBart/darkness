@@ -5,6 +5,7 @@ export interface CelestialEvents {
 
   startDate: Date;
   endDate: Date;
+  timezone: string;
   totalMinutesBetweenNoons: number;
 
   sunUpAtStart: boolean;

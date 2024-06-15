@@ -3,6 +3,7 @@ import * as SunCalc from 'suncalc';
 export interface CelestialInfo {
   sunTimes: SunCalc.GetTimesResult;
   moonTimes: SunCalc.GetMoonTimes;
+  timezone: string;
 
   noon: Date;
   sunUpAtNoon: boolean;

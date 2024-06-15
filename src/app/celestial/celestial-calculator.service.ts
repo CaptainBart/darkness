@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Location } from "@app/location";
 import { addDays, differenceInMinutes, isAfter, isBefore, isDate, startOfDay } from 'date-fns';
 import * as SunCalc from 'suncalc';
+import { CelestialEvents } from './celestial-events.model';
 import { CelestialInfo } from "./celestial-info.model";
-import { CelestialEvents } from './celetial-events.model';
 
 const sunriseAltitude = 0;
 const moonriseAltitude = 0;
@@ -69,6 +69,7 @@ export class CelestialCalculatorService {
     return {
       sunTimes,
       moonTimes,
+      timezone: location.timezone,
       noon: sunTimes.solarNoon,
       sunUpAtNoon: sunAtNoon.altitude >= sunriseAltitude,
       civilTwilightAtNoon: sunAtNoon.altitude < sunriseAltitude && sunAtNoon.altitude >= civilTwilightAltitude,
@@ -90,6 +91,7 @@ export class CelestialCalculatorService {
     let events: Partial<CelestialEvents> = {
       startDate: today.noon,
       endDate: tomorrow.noon,
+      timezone: location.timezone,
       totalMinutesBetweenNoons: differenceInMinutes(tomorrow.noon, today.noon),
       sunUpAtStart: today.sunUpAtNoon,
       civilTwilightAtStart: today.civilTwilightAtNoon,
