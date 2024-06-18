@@ -7,6 +7,6 @@
     [class.night]="section.type === SectionType.NIGHT"
     [class.moon]="section.type === SectionType.MOON"
     title="{{section.startsAt | toLocaleTime:timezone()}} - {{section.endsAt | toLocaleTime:timezone()}}"
-    [ngStyle]="{'width': (section.totalMinutes / totalMinutesBetweenNoons()) + '%'}">
+    [ngStyle]="{'width': (section.totalMinutes / totalMinutesBetweenNoons() * 100) + '%'}">
 </div>
 }

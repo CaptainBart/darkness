@@ -3,7 +3,7 @@ import { Location } from '@app/location';
 import { isAfter, isBefore } from 'date-fns';
 import { CelestialCalculatorService } from './celestial-calculator.service';
 import { CelestialEvents } from './celestial-events.model';
-import { DarknessSections, Section, SectionType } from './darkness-sections.model';
+import { DaylightSection, DaylightSectionType, DaylightSections } from './daylight-sections.model';
 
 const happensBetween = (event: Date | undefined, after: Date, before: Date): boolean => {
   if (event == undefined) {
@@ -13,7 +13,7 @@ const happensBetween = (event: Date | undefined, after: Date, before: Date): boo
   return isAfter(event, after) && isBefore(event, before);
 }
 
-const createSection = (type: SectionType, startsAt: Date, endsAt: Date): Section => {
+const createSection = (type: DaylightSectionType, startsAt: Date, endsAt: Date): DaylightSection => {
   const totalMinutes = (endsAt.getTime() - startsAt.getTime()) / 1000 / 60;
   return {
     type,
@@ -24,12 +24,12 @@ const createSection = (type: SectionType, startsAt: Date, endsAt: Date): Section
 };
 
 @Injectable({ providedIn: 'root' })
-export class DarknessSectionsCalculatorService {
+export class DaylightSectionsCalculatorService {
   #calculator = inject(CelestialCalculatorService);
 
-  createSections(date: Date, location: Location): DarknessSections {
+  createSections(date: Date, location: Location): DaylightSections {
     const events = this.#calculator.createCelestialEvents(date, location);
-    const sections: Section[] = [];
+    const sections: DaylightSection[] = [];
     this.#addDaylightSections(sections, events);
 
     return {
@@ -38,106 +38,106 @@ export class DarknessSectionsCalculatorService {
     };
   }
 
-  #addDaylightSections(sections: Section[], events: CelestialEvents): void {
+  #addDaylightSections(sections: DaylightSection[], events: CelestialEvents): void {
     let momentPointer = events.startDate;
 
     if (events.sunUpAtStart) {
       if (events.sunset == undefined) {
-        sections.push(createSection(SectionType.DAY, momentPointer, events.endDate));
+        sections.push(createSection(DaylightSectionType.DAY, momentPointer, events.endDate));
         return;
       }
 
-      sections.push(createSection(SectionType.DAY, momentPointer, events.sunset));
+      sections.push(createSection(DaylightSectionType.DAY, momentPointer, events.sunset));
       momentPointer = events.sunset;
     }
 
     momentPointer = this.#addCivilTWilightSections(sections, events, momentPointer);
 
     if (momentPointer < events.endDate) {
-      sections.push(createSection(SectionType.DAY, momentPointer, events.endDate));
+      sections.push(createSection(DaylightSectionType.DAY, momentPointer, events.endDate));
     }
   }
 
-  #addCivilTWilightSections(sections: Section[], events: CelestialEvents, momentPointer: Date): Date {
+  #addCivilTWilightSections(sections: DaylightSection[], events: CelestialEvents, momentPointer: Date): Date {
     const civilDawnEnd = events.civilDawnEnd ?? events.endDate;
 
     if (events.civilDuskEnd == undefined) {
-      sections.push(createSection(SectionType.TWILIGHT, momentPointer, civilDawnEnd));
+      sections.push(createSection(DaylightSectionType.TWILIGHT, momentPointer, civilDawnEnd));
       return civilDawnEnd;
     }
 
-    sections.push(createSection(SectionType.TWILIGHT, momentPointer, events.civilDuskEnd));
+    sections.push(createSection(DaylightSectionType.TWILIGHT, momentPointer, events.civilDuskEnd));
     momentPointer = events.civilDuskEnd;
 
     momentPointer = this.#addNauticalTWilightSections(sections, events, momentPointer);
 
     if (momentPointer < civilDawnEnd) {
-      sections.push(createSection(SectionType.TWILIGHT, momentPointer, civilDawnEnd));
+      sections.push(createSection(DaylightSectionType.TWILIGHT, momentPointer, civilDawnEnd));
     }
 
     return civilDawnEnd;
   }
 
-  #addNauticalTWilightSections(sections: Section[], events: CelestialEvents, momentPointer: Date): Date {
+  #addNauticalTWilightSections(sections: DaylightSection[], events: CelestialEvents, momentPointer: Date): Date {
     const nauticalDawnEnd = events.nauticalDawnEnd ?? events.endDate;
 
     if (events.nauticalDuskEnd == undefined) {
-      sections.push(createSection(SectionType.NAUTICAL_TWILIGHT, momentPointer, nauticalDawnEnd));
+      sections.push(createSection(DaylightSectionType.NAUTICAL_TWILIGHT, momentPointer, nauticalDawnEnd));
       return nauticalDawnEnd;
     }
 
-    sections.push(createSection(SectionType.NAUTICAL_TWILIGHT, momentPointer, events.nauticalDuskEnd));
+    sections.push(createSection(DaylightSectionType.NAUTICAL_TWILIGHT, momentPointer, events.nauticalDuskEnd));
     momentPointer = events.nauticalDuskEnd;
 
     momentPointer = this.#addAstronomicalTWilightSections(sections, events, momentPointer);
 
     if (momentPointer < nauticalDawnEnd) {
-      sections.push(createSection(SectionType.NAUTICAL_TWILIGHT, momentPointer, nauticalDawnEnd));
+      sections.push(createSection(DaylightSectionType.NAUTICAL_TWILIGHT, momentPointer, nauticalDawnEnd));
     }
 
     return nauticalDawnEnd;
   }
 
-  #addAstronomicalTWilightSections(sections: Section[], events: CelestialEvents, momentPointer: Date): Date {
+  #addAstronomicalTWilightSections(sections: DaylightSection[], events: CelestialEvents, momentPointer: Date): Date {
     const astronomicalDawnEnd = events.astronomicalDawnEnd ?? events.endDate;
 
     if (events.astronomicalDuskEnd == undefined) {
-      sections.push(createSection(SectionType.ASTRONOMICAL_TWILIGHT, momentPointer, astronomicalDawnEnd));
+      sections.push(createSection(DaylightSectionType.ASTRONOMICAL_TWILIGHT, momentPointer, astronomicalDawnEnd));
       return astronomicalDawnEnd;
     }
 
-    sections.push(createSection(SectionType.ASTRONOMICAL_TWILIGHT, momentPointer, events.astronomicalDuskEnd));
+    sections.push(createSection(DaylightSectionType.ASTRONOMICAL_TWILIGHT, momentPointer, events.astronomicalDuskEnd));
     momentPointer = events.astronomicalDuskEnd;
 
     momentPointer = this.#addNightSections(sections, events, momentPointer);
 
     if (momentPointer < astronomicalDawnEnd) {
-      sections.push(createSection(SectionType.ASTRONOMICAL_TWILIGHT, momentPointer, astronomicalDawnEnd));
+      sections.push(createSection(DaylightSectionType.ASTRONOMICAL_TWILIGHT, momentPointer, astronomicalDawnEnd));
     }
 
     return astronomicalDawnEnd;
   }
 
-  #addNightSections(sections: Section[], events: CelestialEvents, momentPointer: Date): Date {
+  #addNightSections(sections: DaylightSection[], events: CelestialEvents, momentPointer: Date): Date {
     const nightEnd = events.nightEnd ?? events.endDate;
 
     if (events.moonupAtNightStart) {
       if (events.moonset == undefined || !happensBetween(events.moonset, momentPointer, nightEnd)) {
-        sections.push(createSection(SectionType.MOON, momentPointer, nightEnd));
+        sections.push(createSection(DaylightSectionType.MOON, momentPointer, nightEnd));
         return nightEnd;
       }
 
-      sections.push(createSection(SectionType.MOON, momentPointer, events.moonset));
+      sections.push(createSection(DaylightSectionType.MOON, momentPointer, events.moonset));
       momentPointer = events.moonset;
     }
 
     if (events.moonrise == undefined || !happensBetween(events.moonrise, momentPointer, nightEnd)) {
-      sections.push(createSection(SectionType.NIGHT, momentPointer, nightEnd));
+      sections.push(createSection(DaylightSectionType.NIGHT, momentPointer, nightEnd));
       return nightEnd;
     }
 
-    sections.push(createSection(SectionType.NIGHT, momentPointer, events.moonrise));
-    sections.push(createSection(SectionType.MOON, events.moonrise, nightEnd));
+    sections.push(createSection(DaylightSectionType.NIGHT, momentPointer, events.moonrise));
+    sections.push(createSection(DaylightSectionType.MOON, events.moonrise, nightEnd));
     return nightEnd;
   }
 }

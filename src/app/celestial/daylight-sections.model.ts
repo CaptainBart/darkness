@@ -1,18 +1,18 @@
 import { CelestialEvents } from "./celestial-events.model";
 
-export interface DarknessSections {
-  sections: Section[];
+export interface DaylightSections {
+  sections: DaylightSection[];
   events: CelestialEvents;
 }
 
-export interface Section {
-  type: SectionType;
+export interface DaylightSection {
+  type: DaylightSectionType;
   startsAt: Date;
   endsAt: Date;
   totalMinutes: number;
 };
 
-export enum SectionType {
+export enum DaylightSectionType {
   DAY = 1,
   TWILIGHT = 2,
   NAUTICAL_TWILIGHT = 3,

@@ -1,6 +1,7 @@
 import { Inject, LOCALE_ID, Pipe, PipeTransform } from '@angular/core';
 
-const defaultFormatOptions: Intl.DateTimeFormatOptions | { hourCycle: string } = { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' };
+type HourCycle = 'h11' | 'h12' | 'h23' | 'h24';
+const defaultFormatOptions: Intl.DateTimeFormatOptions | { hourCycle: HourCycle | undefined } = { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' };
 
 @Pipe({ name: 'toLocaleTime', standalone: true })
 export class ToLocaleTime implements PipeTransform {
