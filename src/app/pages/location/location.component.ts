@@ -62,7 +62,6 @@ export class LocationComponent {
     this.form.disable();
     try {
       const location = await this.#lookupService.fetchCurrentLocation();
-      console.dir(location);
       this.form.setValue(location);
     } finally {
       this.form.enable();
@@ -71,7 +70,6 @@ export class LocationComponent {
 
   async fetchLocationByName(): Promise<void> {
     const formValue = this.form.value as Partial<Location>;
-    console.dir(formValue);
     if (!formValue.name) {
       return;
     }

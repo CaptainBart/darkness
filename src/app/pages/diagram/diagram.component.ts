@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { DaylightHoursDiagramComponent } from '@app/components/daylight-hours-diagram/daylight-hours-diagram.component';
+import { ShellService } from '@app/shared/shell.service';
+import { format } from 'date-fns';
 
 @Component({
   standalone: true,
@@ -11,5 +13,9 @@ import { DaylightHoursDiagramComponent } from '@app/components/daylight-hours-di
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DiagramComponent {
-  date = new Date();
+  #shellService = inject(ShellService);
+
+  onDateChange(date: Date): void {
+    this.#shellService.changeTitle(format(date, 'MMM yyyy'));
+  }
 }

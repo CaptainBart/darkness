@@ -33,7 +33,6 @@ export class DaylightHoursDiagramComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      console.dir(this.date());
       this.scroller().scrollToIndex(this.currentIndex() - this.currentItemIndexFromTop(), 'auto');
       this.loading.update(() => false);
     }, 10);
