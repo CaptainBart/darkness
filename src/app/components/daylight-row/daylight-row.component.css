@@ -5,4 +5,12 @@
   position: relative;
   border-bottom: solid 1px #333;
   color: red;
+
+  .info {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    line-height: 14px;
+    font-size: 14px;
+  }
 }

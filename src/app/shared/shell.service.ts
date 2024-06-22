@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ShellService {
+  #title = signal('');
+  title = this.#title.asReadonly();
+
   #previousClicked = new Subject<void>();
   previousClicked$ = this.#previousClicked.asObservable();
 
   #nextClicked = new Subject<void>();
   nextClicked$ = this.#nextClicked.asObservable();
-
-  #title = new BehaviorSubject('');
-  title$ = this.#title.asObservable();
 
   previousClick(): void {
     this.#previousClicked.next();
@@ -21,6 +21,6 @@ export class ShellService {
   }
 
   changeTitle(newTitle: string): void {
-    this.#title.next(newTitle);
+    this.#title.set(newTitle);
   }
 }

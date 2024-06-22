@@ -1,5 +1,5 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, OnDestroy, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -21,7 +21,8 @@ import { ShellService } from '@app/shared/shell.service';
     RouterModule,
   ],
   templateUrl: './shell.component.html',
-  styleUrls: ['./shell.component.scss']
+  styleUrls: ['./shell.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShellComponent implements OnDestroy {
   readonly #shellService = inject(ShellService);
@@ -33,7 +34,7 @@ export class ShellComponent implements OnDestroy {
   readonly mobileQuery = this.#media.matchMedia('(max-width: 600px)');
   readonly canInstall = toSignal(this.#pwa.canInstall$, { initialValue: false });
   readonly hasUpdate = toSignal(this.#pwa.checkForUpdates(), { initialValue: false });
-  readonly title = toSignal(this.#shellService.title$, { initialValue: '' });
+  readonly title = this.#shellService.title;
 
   constructor() {
     this.mobileQuery.addEventListener("change", this.#mobileQueryListener);

@@ -1,5 +1,5 @@
 import { NgStyle } from '@angular/common';
-import { Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { DaylightSectionType, DaylightSections } from '@app/celestial/daylight-sections.model';
 import { ToLocaleTime } from '@app/shared/date-locale.pipe';
 
@@ -8,7 +8,8 @@ import { ToLocaleTime } from '@app/shared/date-locale.pipe';
   standalone: true,
   imports: [NgStyle, ToLocaleTime],
   templateUrl: './daylight-sections.component.html',
-  styleUrl: './daylight-sections.component.css'
+  styleUrl: './daylight-sections.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DaylightSectionsComponent {
   SectionType = DaylightSectionType;

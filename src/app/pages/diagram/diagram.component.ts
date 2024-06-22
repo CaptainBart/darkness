@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
-import { DaylightRowComponent } from '@app/app/components/daylight-row/daylight-row.component';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { DaylightHoursDiagramComponent } from '@app/components/daylight-hours-diagram/daylight-hours-diagram.component';
 
 @Component({
   standalone: true,
   imports: [
-    DaylightRowComponent,
+    DaylightHoursDiagramComponent,
   ],
   templateUrl: './diagram.component.html',
-  styleUrls: ['./diagram.component.css']
+  styleUrls: ['./diagram.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DiagramComponent {
   date = new Date();
