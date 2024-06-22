@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Location, LocationLookupService, LocationService } from '@app/location';
 
 const INITIAL_LOCATION: Location = {
@@ -27,6 +27,7 @@ const INITIAL_LOCATION: Location = {
     MatProgressSpinnerModule,
     MatSnackBarModule,
     ReactiveFormsModule,
+    RouterModule,
   ],
   providers: [
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5000 } },
