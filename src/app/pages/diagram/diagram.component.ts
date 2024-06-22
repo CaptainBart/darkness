@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, model } from '@angular/core';
 import { DaylightHoursDiagramComponent } from '@app/components/daylight-hours-diagram/daylight-hours-diagram.component';
+import { DaylightInfoComponent } from '@app/daylight-info/daylight-info.component';
 import { ShellService } from '@app/shared/shell.service';
 import { format } from 'date-fns';
 
@@ -7,6 +8,7 @@ import { format } from 'date-fns';
   standalone: true,
   imports: [
     DaylightHoursDiagramComponent,
+    DaylightInfoComponent,
   ],
   templateUrl: './diagram.component.html',
   styleUrls: ['./diagram.component.css'],
@@ -14,8 +16,11 @@ import { format } from 'date-fns';
 })
 export class DiagramComponent {
   #shellService = inject(ShellService);
+  date = model(new Date());
 
-  onDateChange(date: Date): void {
-    this.#shellService.changeTitle(format(date, 'MMM yyyy'));
+  constructor() {
+    effect(() => {
+      this.#shellService.changeTitle(format(this.date(), 'MMM yyyy'));
+    }, { allowSignalWrites: true });
   }
 }

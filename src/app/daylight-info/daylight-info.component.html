@@ -1,0 +1,54 @@
+<div class="icon-texts sun">
+  <mat-icon>arrow_downward_alt</mat-icon>
+  <span>{{(events().sunset | toLocaleTime:events().timezone) ?? '-:--'}}</span>
+</div>
+
+<div class="icon-texts sun">
+  <mat-icon>arrow_upward_alt</mat-icon>
+  <span>{{(events().sunrise | toLocaleTime:events().timezone) ?? '-:--'}}</span>
+</div>
+
+<div class="icon-texts twilight">
+  <mat-icon>arrow_downward_alt</mat-icon>
+  <span>{{(events().civilDuskEnd | toLocaleTime:events().timezone) ?? '-:--'}}</span>
+</div>
+
+<div class="icon-texts twilight">
+  <mat-icon>arrow_upward_alt</mat-icon>
+  <span>{{(events().civilDawnStart | toLocaleTime:events().timezone) ?? '-:--'}}</span>
+</div>
+
+<div class="icon-texts nautical">
+  <mat-icon>arrow_downward_alt</mat-icon>
+  <span>{{(events().nauticalDuskEnd | toLocaleTime:events().timezone) ?? '-:--'}}</span>
+</div>
+
+<div class="icon-texts nautical">
+  <mat-icon>arrow_upward_alt</mat-icon>
+  <span>{{(events().nauticalDawnStart | toLocaleTime:events().timezone) ?? '-:--'}}</span>
+</div>
+
+<div class="icon-texts astronomical">
+  <mat-icon>arrow_downward_alt</mat-icon>
+  <span>{{(events().astronomicalDuskEnd | toLocaleTime:events().timezone) ?? '-:--'}}</span>
+</div>
+
+<div class="icon-texts astronomical">
+  <mat-icon>arrow_upward_alt</mat-icon>
+  <span>{{(events().astronomicalDawnStart | toLocaleTime:events().timezone) ?? '-:--'}}</span>
+</div>
+
+<div class="icon-texts moon">
+  <mat-icon>arrow_downward_alt</mat-icon>
+  <span>{{(events().moonset | toLocaleTime:events().timezone) ?? '-:--'}}</span>
+</div>
+
+<div class="icon-texts moon">
+  <mat-icon>arrow_upward_alt</mat-icon>
+  <span>{{(events().moonrise | toLocaleTime:events().timezone) ?? '-:--'}}</span>
+</div>
+
+
+
+
+

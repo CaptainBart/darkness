@@ -1,0 +1,43 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  height: 40px;
+  background-color: black;
+
+  font-size: 14px;
+  line-height: 16px;
+
+  .icon-texts {
+    height: 40%;
+    display: flex;
+    align-items: center;
+  }
+
+  mat-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+  }
+
+  .sun {
+    color: rgb(233, 198, 0);
+  }
+
+  .twilight {
+    color: lightblue;
+  }
+
+  .nautical {
+    color: blue;
+  }
+
+  .astronomical {
+    color: darkblue;
+  }
+
+  .moon {
+    color: #666;
+  }
+}

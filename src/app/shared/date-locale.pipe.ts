@@ -7,7 +7,11 @@ const defaultFormatOptions: Intl.DateTimeFormatOptions | { hourCycle: HourCycle 
 export class ToLocaleTime implements PipeTransform {
   constructor(@Inject(LOCALE_ID) private readonly locale: string) { }
 
-  public transform(value: Date, timeZone: string): string {
+  public transform(value: Date | undefined, timeZone: string): string | undefined {
+    if (value === undefined) {
+      return undefined;
+    }
+
     const opts: Intl.DateTimeFormatOptions = { ...defaultFormatOptions, timeZone };
     return value.toLocaleTimeString([this.locale], opts);
   }
