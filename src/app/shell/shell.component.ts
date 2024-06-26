@@ -6,6 +6,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
+import { PwaService } from '@app/shared/pwa.service';
 // import { PwaService } from '@app/shared/pwa.service';
 import { ShellService } from '@app/shared/shell.service';
 
@@ -25,14 +26,13 @@ import { ShellService } from '@app/shared/shell.service';
 })
 export class ShellComponent implements OnDestroy {
   readonly #shellService = inject(ShellService);
-  // readonly #pwa = inject(PwaService);
+  readonly #pwa = inject(PwaService);
   readonly #changeDetectorRef = inject(ChangeDetectorRef);
   readonly #media = inject(MediaMatcher);
 
   readonly #mobileQueryListener = () => { this.#changeDetectorRef.detectChanges(); }
   readonly mobileQuery = this.#media.matchMedia('(max-width: 600px)');
-  // readonly canInstall = toSignal(this.#pwa.canInstall$, { initialValue: false });
-  // readonly hasUpdate = toSignal(this.#pwa.checkForUpdates(), { initialValue: false });
+  readonly canInstall = this.#pwa.canInstall;
   readonly title = this.#shellService.title;
 
   constructor() {

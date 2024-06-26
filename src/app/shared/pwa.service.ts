@@ -1,31 +1,75 @@
 import { DOCUMENT } from "@angular/common";
-import { ApplicationRef, Injectable, inject } from "@angular/core";
+import { Injectable, inject, signal } from "@angular/core";
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SwUpdate } from "@angular/service-worker";
-import { BehaviorSubject, Observable, from, switchMap } from 'rxjs';
+import { EMPTY, Observable, fromEvent, shareReplay, take } from 'rxjs';
+
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{
+    outcome: 'accepted' | 'dismissed',
+    platform: string
+  }>;
+  prompt(): Promise<void>;
+}
+
+declare global {
+  interface WindowEventMap {
+    beforeinstallprompt: BeforeInstallPromptEvent;
+  }
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class PwaService {
   readonly #swUpdate = inject(SwUpdate);
-  readonly #applicationRef = inject(ApplicationRef);
   readonly #document = inject(DOCUMENT);
+
+  readonly #beforeInstallPrompt$ = this.#document.defaultView == null
+    ? EMPTY
+    : (fromEvent(this.#document.defaultView, 'beforeinstallprompt') as Observable<BeforeInstallPromptEvent>).pipe(take(1), shareReplay());
+
+  readonly #canInstall = signal(false);
+  readonly canInstall = this.#canInstall.asReadonly();
+
   readonly #window = this.#document.defaultView;
   #promptEvent: BeforeInstallPromptEvent | undefined = undefined;
-  readonly #canInstall = new BehaviorSubject(false);
-  readonly canInstall$ = this.#canInstall.asObservable();
 
-  // constructor() {
-  //   this.#window?.addEventListener('beforeinstallprompt', (event: BeforeInstallPromptEvent) => {
-  //     this.#promptEvent = event;
-  //     this.#canInstall.next(true);
-  //   });
-  // }
+  constructor() {
+    this.#beforeInstallPrompt$.subscribe((evt) => {
+      console.log('Application can be installed as PWA.');
+      this.#promptEvent = evt;
+      this.#canInstall.set(true);
+    });
 
-  checkForUpdates(): Observable<boolean> {
-    return this.#applicationRef.isStable.pipe(
-      switchMap(() => from(this.#swUpdate.checkForUpdate()))
-    );
+    this.#checkForUpdate();
+  }
+
+  #checkForUpdate(): void {
+    if (!this.#swUpdate.isEnabled) {
+      return;
+    }
+
+    this.#swUpdate.versionUpdates.pipe(
+      takeUntilDestroyed(),
+    ).subscribe((evt) => {
+      switch (evt.type) {
+        case 'NO_NEW_VERSION_DETECTED':
+          console.log(`Running app version: ${evt.version.hash}`);
+          break;
+        case 'VERSION_DETECTED':
+          console.log(`Downloading new app version: ${evt.version.hash}`);
+          break;
+        case 'VERSION_READY':
+          console.log(`Current app version: ${evt.currentVersion.hash}`);
+          console.log(`New app version ready for use: ${evt.latestVersion.hash}`);
+          break;
+        case 'VERSION_INSTALLATION_FAILED':
+          console.log(`Failed to install app version '${evt.version.hash}': ${evt.error}`);
+          break;
+      }
+    });
   }
 
   public update(): void {
@@ -48,6 +92,6 @@ export class PwaService {
       console.log('user dismissed the add to homescreen');
     }
 
-    this.#canInstall.next(false);
+    this.#canInstall.set(false);
   }
 }
