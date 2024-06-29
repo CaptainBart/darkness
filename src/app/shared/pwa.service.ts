@@ -33,6 +33,9 @@ export class PwaService {
   readonly #canInstall = signal(false);
   readonly canInstall = this.#canInstall.asReadonly();
 
+  readonly #canUpdate = signal(false);
+  readonly canUpdate = this.#canUpdate.asReadonly();
+
   readonly #window = this.#document.defaultView;
   #promptEvent: BeforeInstallPromptEvent | undefined = undefined;
 
@@ -64,6 +67,7 @@ export class PwaService {
         case 'VERSION_READY':
           console.log(`Current app version: ${evt.currentVersion.hash}`);
           console.log(`New app version ready for use: ${evt.latestVersion.hash}`);
+          this.#canUpdate.set(true);
           break;
         case 'VERSION_INSTALLATION_FAILED':
           console.log(`Failed to install app version '${evt.version.hash}': ${evt.error}`);
@@ -76,6 +80,8 @@ export class PwaService {
     if (this.#window !== null) {
       this.#window.location.reload();
     }
+
+    this.#canUpdate.set(false);
   }
 
   public async install(): Promise<void> {

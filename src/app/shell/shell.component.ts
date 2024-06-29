@@ -7,7 +7,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { PwaService } from '@app/shared/pwa.service';
-// import { PwaService } from '@app/shared/pwa.service';
 import { ShellService } from '@app/shared/shell.service';
 
 @Component({
@@ -33,6 +32,7 @@ export class ShellComponent implements OnDestroy {
   readonly #mobileQueryListener = () => { this.#changeDetectorRef.detectChanges(); }
   readonly mobileQuery = this.#media.matchMedia('(max-width: 600px)');
   readonly canInstall = this.#pwa.canInstall;
+  readonly canUpdate = this.#pwa.canUpdate;
   readonly title = this.#shellService.title;
 
   constructor() {
@@ -51,11 +51,11 @@ export class ShellComponent implements OnDestroy {
     this.#shellService.nextClick();
   }
 
-  // async installApp(): Promise<void> {
-  //   await this.#pwa.install();
-  // }
+  async installApp(): Promise<void> {
+    await this.#pwa.install();
+  }
 
-  // updateApp() {
-  //   this.#pwa.update();
-  // }
+  updateApp() {
+    this.#pwa.update();
+  }
 }
