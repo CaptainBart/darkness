@@ -35,6 +35,13 @@ export class PwaService {
   #promptEvent: BeforeInstallPromptEvent | undefined = undefined;
 
   constructor() {
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
+      console.log('Application can be installed as PWA (window).');
+      this.#promptEvent = event;
+      this.#canInstall.set(true);
+    });
+
     this.#document.defaultView?.addEventListener("beforeinstallprompt", (event) => {
       event.preventDefault();
       console.log('Application can be installed as PWA.');
