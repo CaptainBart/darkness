@@ -23,18 +23,19 @@
           <mat-icon matListItemIcon>info</mat-icon>
           <span matListItemTitle>About</span>
         </a>
-        <!-- @if(canInstall()) {
+        @if(canInstall()) {
           <a mat-list-item (click)="installApp()">
             <mat-icon matListItemIcon>install_mobile</mat-icon>
             <span matListItemTitle>Install</span>
           </a>
-        } -->
+        }
 
-
-        <!-- <a mat-list-item (click)="updateApp()">
-          <mat-icon matListItemIcon>refresh</mat-icon>
-          <span matListItemTitle>Update</span>
-        </a> -->
+        @if(canUpdate()) {
+          <a mat-list-item (click)="updateApp()">
+            <mat-icon matListItemIcon>refresh</mat-icon>
+            <span matListItemTitle>Update</span>
+          </a>
+      }
 
       </mat-nav-list>
     </mat-sidenav>
