@@ -2,7 +2,6 @@ import { DOCUMENT } from "@angular/common";
 import { Injectable, inject, signal } from "@angular/core";
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SwUpdate } from "@angular/service-worker";
-import { EMPTY, Observable, fromEvent, shareReplay, take } from 'rxjs';
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -26,10 +25,6 @@ export class PwaService {
   readonly #swUpdate = inject(SwUpdate);
   readonly #document = inject(DOCUMENT);
 
-  readonly #beforeInstallPrompt$ = this.#document.defaultView == null
-    ? EMPTY
-    : (fromEvent(this.#document.defaultView, 'beforeinstallprompt') as Observable<BeforeInstallPromptEvent>).pipe(take(1), shareReplay());
-
   readonly #canInstall = signal(false);
   readonly canInstall = this.#canInstall.asReadonly();
 
@@ -40,9 +35,10 @@ export class PwaService {
   #promptEvent: BeforeInstallPromptEvent | undefined = undefined;
 
   constructor() {
-    this.#beforeInstallPrompt$.subscribe((evt) => {
+    this.#document.defaultView?.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
       console.log('Application can be installed as PWA.');
-      this.#promptEvent = evt;
+      this.#promptEvent = event;
       this.#canInstall.set(true);
     });
 
