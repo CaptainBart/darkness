@@ -1,8 +1,8 @@
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from "@angular/material/form-field";
 import { Route } from "@angular/router";
-import { LocationComponent } from "./location.component";
 
 const ROUTES: Route[] = [
-    {path: '', component: LocationComponent},
+  { path: '', loadComponent: () => import("./location.component"), providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } }] },
 ];
 
 export default ROUTES;

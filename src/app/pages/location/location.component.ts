@@ -33,10 +33,10 @@ const INITIAL_LOCATION: Location = {
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5000 } },
   ],
   templateUrl: './location.component.html',
-  styleUrls: ['./location.component.css'],
+  styleUrl: './location.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LocationComponent {
+export default class LocationComponent {
   readonly #locationService = inject(LocationService);
   readonly #lookupService = inject(LocationLookupService);
   readonly #formBuilder = inject(UntypedFormBuilder);

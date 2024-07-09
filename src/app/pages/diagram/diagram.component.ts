@@ -11,7 +11,7 @@ import { format } from 'date-fns';
     DaylightInfoComponent,
   ],
   templateUrl: './diagram.component.html',
-  styleUrls: ['./diagram.component.css'],
+  styleUrl: './diagram.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DiagramComponent {

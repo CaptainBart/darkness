@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   imports: [
   ],
   templateUrl: './info.component.html',
-  styleUrls: ['./info.component.css'],
+  styleUrl: './info.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
