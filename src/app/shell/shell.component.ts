@@ -20,10 +20,10 @@ import { ShellService } from '@app/shared/shell.service';
     RouterModule,
   ],
   templateUrl: './shell.component.html',
-  styleUrls: ['./shell.component.scss'],
+  styleUrl: './shell.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ShellComponent implements OnDestroy {
+export default class ShellComponent implements OnDestroy {
   readonly #shellService = inject(ShellService);
   readonly #pwa = inject(PwaService);
   readonly #changeDetectorRef = inject(ChangeDetectorRef);

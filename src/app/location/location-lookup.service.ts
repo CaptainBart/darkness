@@ -1,8 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { GeocodingService, SearchResult } from './geocoding.service';
 import { Location } from './location.model';
-//import tz_lookup from "tz-lookup";
-import tz_lookup from '@photostructure/tz-lookup';
+import { tzLookup } from './tz-lookup';
 
 @Injectable({ providedIn: 'root' })
 export class LocationLookupService {
@@ -25,17 +24,17 @@ export class LocationLookupService {
     return ({
       ...location,
       name: result.display_name,
-      timezone: tz_lookup(location.lat, location.lng)
+      timezone: await tzLookup(location.lat, location.lng)
     });
 
   }
 
   async fetchLocation(name: string): Promise<Location | undefined> {
     const results = await this.#geocodingService.search(name);
-    return this.#findBestMatch(results);
+    return await this.#findBestMatch(results);
   }
 
-  #findBestMatch(results: SearchResult[]): Location | undefined {
+  async #findBestMatch(results: SearchResult[]): Promise<Location | undefined> {
     let result = results.find(result => result.category === 'boundary');
     if (!result && results.length > 0) {
       result = results[0];
@@ -49,7 +48,7 @@ export class LocationLookupService {
       name: result.display_name,
       lat: +result.lat,
       lng: +result.lng,
-      timezone: tz_lookup(+result.lat, +result.lng)
+      timezone: await tzLookup(+result.lat, +result.lng)
     });
   }
 }
