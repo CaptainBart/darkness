@@ -3,7 +3,7 @@
   minBufferPx="800"
   maxBufferPx="1600"
   class="scroller-viewport"
-  [ngStyle]="{'visibility': (loading() ? 'hidden' : 'visible')}"
+  [ngClass]="{'loading': loading()}"
   (scrolledIndexChange)="onScrolledIndexChanged($event)">
-  <app-daylight-row *cdkVirtualFor="let day of days(); let i = index" [date]="day" [class.current]="currentIndex() === i"></app-daylight-row>
+  <app-daylight-row *cdkVirtualFor="let day of days(); let i = index" [date]="day" [class.current]="currentIndex() === i" />
 </cdk-virtual-scroll-viewport>
