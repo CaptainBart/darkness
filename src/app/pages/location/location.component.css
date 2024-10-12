@@ -1,6 +1,7 @@
 form {
     max-width: 480px;
     margin: 10px auto;
+    padding: 0 10px;
 }
 
 mat-form-field.w100 {
