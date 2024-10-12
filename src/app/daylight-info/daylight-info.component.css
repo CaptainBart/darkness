@@ -4,7 +4,7 @@
   flex-wrap: wrap;
   justify-content: space-around;
   height: 40px;
-  background-color: #222;
+  background-color: #1e1a1d;
 
   font-size: 16px;
   line-height: 18px;
@@ -26,15 +26,15 @@
   }
 
   .twilight {
-    color: lightblue;
+    color: #add8e6;
   }
 
   .nautical {
-    color: blue;
+    color: #3333ff;
   }
 
   .astronomical {
-    color: darkblue;
+    color: #0000cc;
   }
 
   .moon {
