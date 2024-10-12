@@ -18,12 +18,11 @@
   position: fixed;
   /* Make sure the toolbar will stay on top of the content as it scrolls past. */
   z-index: 2;
-
-  .sidenav-container {
-    margin-top: 56px;
-  }
 }
 
+.is-mobile .sidenav-container {
+  margin-top: 56px;
+}
 
 
 mat-sidenav {
