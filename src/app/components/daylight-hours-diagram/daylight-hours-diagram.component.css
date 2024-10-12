@@ -3,6 +3,10 @@
   width: 100%;
 
   .scroller-viewport {
+    visibility: visible;
+    &.loading {
+      visibility: hidden;
+    }
       display: block;
       height: 100%;
 

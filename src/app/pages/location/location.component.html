@@ -1,20 +1,20 @@
 <form [formGroup]="form">
-    <div style="text-align: center;">
+    <div class="text-center">
         <mat-form-field class="w100">
             <mat-label>Location</mat-label>
             <input matInput #nameControl formControlName="name" />
             @if (!form.disabled) {
-            <button mat-icon-button matSuffix (click)="fetchLocationByName()">
+            <button mat-icon-button type="button" matSuffix (click)="fetchLocationByName()">
                 <mat-icon>search</mat-icon>
             </button>
             }
             @if (!form.disabled) {
-            <button mat-icon-button matSuffix (click)="fetchCurrentLocation()">
+            <button mat-icon-button type="button" matSuffix (click)="fetchCurrentLocation()">
                 <mat-icon>my_location</mat-icon>
             </button>
             }
             @if (!form.disabled && nameControl.value) {
-            <button matSuffix mat-icon-button aria-label="Clear" (click)="nameControl.value=''">
+            <button matSuffix type="button" mat-icon-button aria-label="Clear" (click)="nameControl.value=''">
                 <mat-icon>close</mat-icon>
             </button>
             }
@@ -33,8 +33,8 @@
             <input matInput formControlName="lng" readonly="readonly">
         </mat-form-field>
     </div>
-    <div style="text-align: center;">
-        <button mat-raised-button color="primary" [disabled]="form.disabled" (click)="storePosition()">Save</button>
+    <div class="text-center">
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.disabled" (click)="storePosition()">Save</button>
 
         @if (hasLocation()) {
             <a routerLink="/" mat-raised-button>Cancel</a>
