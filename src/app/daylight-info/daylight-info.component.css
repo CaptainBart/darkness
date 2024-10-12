@@ -6,8 +6,8 @@
   height: 40px;
   background-color: black;
 
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 16px;
+  line-height: 18px;
 
   .icon-texts {
     height: 40%;
@@ -16,9 +16,9 @@
   }
 
   mat-icon {
-    width: 16px;
-    height: 16px;
-    font-size: 16px;
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
   }
 
   .sun {
@@ -26,15 +26,15 @@
   }
 
   .twilight {
-    color: #add8e6;
+    color: lightblue;
   }
 
   .nautical {
-    color: #0000ff;
+    color: blue;
   }
 
   .astronomical {
-    color: #0000cc;
+    color: darkblue;
   }
 
   .moon {
